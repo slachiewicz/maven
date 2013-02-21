@@ -707,6 +707,13 @@ public class MavenCli
 
         dispatcher = (DefaultSecDispatcher) container.lookup( SecDispatcher.class, "maven" );
 
+        if ( cliRequest.commandLine.hasOption( CLIManager.ALTERNATE_USER_SETTINGS_SECURITY ) )
+        {
+            String altSettingsSecurityFile = cliRequest.commandLine.getOptionValue(
+                    CLIManager.ALTERNATE_USER_SETTINGS_SECURITY );
+            dispatcher.setConfigurationFile( altSettingsSecurityFile );
+        }
+
         return container;
     }
 
