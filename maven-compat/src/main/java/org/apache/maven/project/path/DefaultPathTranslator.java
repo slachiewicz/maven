@@ -27,13 +27,16 @@ import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.model.Resource;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * DefaultPathTranslator
  */
 @Deprecated
-@Component( role = PathTranslator.class )
+@Named
+@Singleton
 public class DefaultPathTranslator
     implements PathTranslator
 {

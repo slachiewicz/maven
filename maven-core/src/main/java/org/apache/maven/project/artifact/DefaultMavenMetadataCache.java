@@ -34,12 +34,15 @@ import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.metadata.ResolutionGroup;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * DefaultMavenMetadataCache
  */
-@Component( role = MavenMetadataCache.class )
+@Named
+@Singleton
 public class DefaultMavenMetadataCache
     implements MavenMetadataCache
 {

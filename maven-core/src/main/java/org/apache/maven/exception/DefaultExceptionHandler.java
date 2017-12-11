@@ -35,8 +35,12 @@ import org.apache.maven.plugin.PluginContainerException;
 import org.apache.maven.plugin.PluginExecutionException;
 import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.project.ProjectBuildingResult;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.StringUtils;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /*
 
@@ -86,7 +90,8 @@ Plugins:
 /**
  * Transform an exception into useful end-user message.
  */
-@Component( role = ExceptionHandler.class )
+@Named
+@Singleton
 public class DefaultExceptionHandler
     implements ExceptionHandler
 {
@@ -160,7 +165,7 @@ public class DefaultExceptionHandler
 
             String location = ModelProblemUtils.formatLocation( problem, projectId );
 
-            if ( StringUtils.isNotEmpty( location ) )
+            if ( isNotEmpty( location ) )
             {
                 message += " @ " + location;
             }
@@ -216,12 +221,12 @@ public class DefaultExceptionHandler
                     }
                 }
 
-                if ( StringUtils.isEmpty( reference ) )
+                if ( isEmpty( reference ) )
                 {
                     reference = getReference( cause );
                 }
 
-                if ( StringUtils.isEmpty( reference ) )
+                if ( isEmpty( reference ) )
                 {
                     reference = exception.getClass().getSimpleName();
                 }
@@ -236,7 +241,7 @@ public class DefaultExceptionHandler
             }
         }
 
-        if ( StringUtils.isNotEmpty( reference ) && !reference.startsWith( "http:" ) )
+        if ( isNotEmpty( reference ) && !reference.startsWith( "http:" ) )
         {
             reference = "http://cwiki.apache.org/confluence/display/MAVEN/" + reference;
         }
@@ -276,9 +281,9 @@ public class DefaultExceptionHandler
             if ( t instanceof AbstractMojoExecutionException )
             {
                 String longMessage = ( (AbstractMojoExecutionException) t ).getLongMessage();
-                if ( StringUtils.isNotEmpty( longMessage ) )
+                if ( isNotEmpty( longMessage ) )
                 {
-                    if ( StringUtils.isEmpty( exceptionMessage ) || longMessage.contains( exceptionMessage ) )
+                    if ( isEmpty( exceptionMessage ) || longMessage.contains( exceptionMessage ) )
                     {
                         exceptionMessage = longMessage;
                     }
@@ -289,7 +294,7 @@ public class DefaultExceptionHandler
                 }
             }
 
-            if ( StringUtils.isEmpty( exceptionMessage ) )
+            if ( isEmpty( exceptionMessage ) )
             {
                 exceptionMessage = t.getClass().getSimpleName();
             }
@@ -311,14 +316,14 @@ public class DefaultExceptionHandler
     {
         String message = "";
 
-        if ( StringUtils.isNotEmpty( message1 ) )
+        if ( isNotEmpty( message1 ) )
         {
             message = message1.trim();
         }
 
-        if ( StringUtils.isNotEmpty( message2 ) )
+        if ( isNotEmpty( message2 ) )
         {
-            if ( StringUtils.isNotEmpty( message ) )
+            if ( isNotEmpty( message ) )
             {
                 if ( message.endsWith( "." ) || message.endsWith( "!" ) || message.endsWith( ":" ) )
                 {

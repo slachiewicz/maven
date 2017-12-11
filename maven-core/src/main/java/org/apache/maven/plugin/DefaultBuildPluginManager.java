@@ -32,10 +32,12 @@ import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 // TODO the antrun plugin has its own configurator, the only plugin that does. might need to think about how that works
 // TODO remove the coreArtifactFilterManager
@@ -43,27 +45,31 @@ import org.eclipse.aether.repository.RemoteRepository;
 /**
  * DefaultBuildPluginManager
  */
-@Component( role = BuildPluginManager.class )
+@Named
+@Singleton
 public class DefaultBuildPluginManager
     implements BuildPluginManager
 {
 
-    @Requirement
+    @Inject
     private MavenPluginManager mavenPluginManager;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
-    @Requirement
+    @Inject
     private MojoExecutionScope scope;
 
     private MojoExecutionListener mojoExecutionListener;
 
-    // this tricks plexus-component-metadata generate required metadata
-    @Requirement( role = MojoExecutionListener.class )
     private List<MojoExecutionListener> mojoExecutionListeners;
 
-    public void setMojoExecutionListeners( final List<MojoExecutionListener> listeners )
+    @Inject
+    public DefaultBuildPluginManager( final MojoExecutionListener mojoExecutionListener ) {
+        this.mojoExecutionListener = mojoExecutionListener;
+    }
+
+    public void setMojoExecutionListeners(final List<MojoExecutionListener> listeners )
     {
         this.mojoExecutionListeners = listeners;
         this.mojoExecutionListener = new CompoundMojoExecutionListener( listeners );

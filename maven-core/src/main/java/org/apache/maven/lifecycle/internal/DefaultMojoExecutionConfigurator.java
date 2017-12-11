@@ -26,14 +26,18 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * @since 3.3.1, MNG-5753
  */
-@Component( role = MojoExecutionConfigurator.class )
+@Named
+@Singleton
 public class DefaultMojoExecutionConfigurator
     implements MojoExecutionConfigurator
 {
@@ -91,7 +95,7 @@ public class DefaultMojoExecutionConfigurator
 
     private PluginExecution findPluginExecution( String executionId, Collection<PluginExecution> executions )
     {
-        if ( StringUtils.isNotEmpty( executionId ) )
+        if ( isNotEmpty( executionId ) )
         {
             for ( PluginExecution execution : executions )
             {

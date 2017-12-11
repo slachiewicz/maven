@@ -22,7 +22,9 @@ package org.apache.maven.repository.legacy.resolver.conflict;
 import org.apache.maven.artifact.resolver.ResolutionNode;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.OverConstrainedVersionException;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Resolves conflicting artifacts by always selecting the <em>oldest</em> declaration. Oldest is defined as the
@@ -32,7 +34,8 @@ import org.codehaus.plexus.component.annotations.Component;
  * @see ArtifactVersion#compareTo
  * @since 3.0
  */
-@Component( role = ConflictResolver.class, hint = "oldest" )
+@Named("oldest")
+@Singleton
 public class OldestConflictResolver
     implements ConflictResolver
 {

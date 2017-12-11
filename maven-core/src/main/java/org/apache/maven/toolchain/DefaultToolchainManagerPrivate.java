@@ -25,17 +25,26 @@ import java.util.Map;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.toolchain.model.ToolchainModel;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author mkleint
  * @author Robert Scholte
  */
-@Component( role = ToolchainManagerPrivate.class )
+@Named
+@Singleton
 public class DefaultToolchainManagerPrivate
     extends DefaultToolchainManager
     implements ToolchainManagerPrivate
 {
+
+    @Inject
+    public DefaultToolchainManagerPrivate(Map<String, ToolchainFactory> factories) {
+        super(factories);
+    }
 
     @Override
     public ToolchainPrivate[] getToolchainsForType( String type, MavenSession context )

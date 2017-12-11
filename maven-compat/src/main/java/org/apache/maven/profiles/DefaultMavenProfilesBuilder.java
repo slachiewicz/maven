@@ -20,7 +20,6 @@ package org.apache.maven.profiles;
  */
 
 import org.apache.maven.profiles.io.xpp3.ProfilesXpp3Reader;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.interpolation.EnvarBasedValueSource;
 import org.codehaus.plexus.interpolation.RegexBasedInterpolator;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -28,6 +27,8 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -38,7 +39,8 @@ import java.io.StringWriter;
  * DefaultMavenProfilesBuilder
  */
 @Deprecated
-@Component( role = MavenProfilesBuilder.class )
+@Named
+@Singleton
 public class DefaultMavenProfilesBuilder
     extends AbstractLogEnabled
     implements MavenProfilesBuilder

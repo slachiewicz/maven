@@ -35,7 +35,6 @@ import org.apache.maven.model.building.ModelProblemCollector;
 import org.apache.maven.model.building.ModelProblemCollectorRequest;
 import org.apache.maven.model.path.PathTranslator;
 import org.apache.maven.model.path.UrlNormalizer;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.interpolation.AbstractValueSource;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.InterpolationPostProcessor;
@@ -47,6 +46,8 @@ import org.codehaus.plexus.interpolation.PrefixedObjectValueSource;
 import org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper;
 import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.ValueSource;
+
+import javax.inject.Inject;
 
 /**
  * Use a regular expression search to find and resolve expressions within the POM.
@@ -86,10 +87,10 @@ public abstract class AbstractStringBasedModelInterpolator
         TRANSLATED_PATH_EXPRESSIONS = translatedPrefixes;
     }
 
-    @Requirement
+    @Inject
     private PathTranslator pathTranslator;
 
-    @Requirement
+    @Inject
     private UrlNormalizer urlNormalizer;
 
     private Interpolator interpolator;

@@ -21,11 +21,12 @@ package org.apache.maven.execution;
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.StringUtils;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Describes runtime information about the application.
@@ -33,15 +34,23 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
 @Deprecated
-@Component( role = RuntimeInformation.class )
+@Named
+@Singleton
 public class DefaultRuntimeInformation
-    implements RuntimeInformation, Initializable
+    implements RuntimeInformation
 {
 
-    @Requirement
     private org.apache.maven.rtinfo.RuntimeInformation rtInfo;
 
+
     private ArtifactVersion applicationVersion;
+
+    @Inject
+    public DefaultRuntimeInformation(final org.apache.maven.rtinfo.RuntimeInformation rtInfo)
+            throws Exception {
+        this.rtInfo = rtInfo;
+        initialize();
+    }
 
     public ArtifactVersion getApplicationVersion()
     {
@@ -49,13 +58,13 @@ public class DefaultRuntimeInformation
     }
 
     public void initialize()
-        throws InitializationException
+        throws Exception
     {
         String mavenVersion = rtInfo.getMavenVersion();
 
-        if ( StringUtils.isEmpty( mavenVersion ) )
+        if ( isEmpty( mavenVersion ) )
         {
-            throw new InitializationException( "Unable to read Maven version from maven-core" );
+            throw new Exception( "Unable to read Maven version from maven-core" );
         }
 
         applicationVersion = new DefaultArtifactVersion( mavenVersion );

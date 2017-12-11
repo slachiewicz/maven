@@ -27,10 +27,12 @@ import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.metadata.ResolutionGroup;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.artifact.MavenMetadataSource;
-import org.codehaus.plexus.component.annotations.Component;
 
-@SuppressWarnings( "deprecation" )
-@Component( role = ArtifactMetadataSource.class, hint = "classpath" )
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+@Named("classpath")
+@Singleton
 public class TestMetadataSource
     extends MavenMetadataSource
 {

@@ -29,12 +29,14 @@ import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.repository.WorkspaceRepository;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Caches raw plugin descriptors. A raw plugin descriptor is a descriptor that has just been extracted from the plugin
@@ -46,7 +48,8 @@ import org.eclipse.aether.repository.WorkspaceRepository;
  * @since 3.0
  * @author Benjamin Bentmann
  */
-@Component( role = PluginDescriptorCache.class )
+@Named
+@Singleton
 public class DefaultPluginDescriptorCache
     implements PluginDescriptorCache
 {

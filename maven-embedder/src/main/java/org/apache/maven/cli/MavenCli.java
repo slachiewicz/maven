@@ -78,9 +78,11 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.aether.transfer.TransferListener;
+import org.eclipse.sisu.inject.DeferredClass;
+import org.eclipse.sisu.inject.DeferredProvider;
+import org.eclipse.sisu.space.LoadedClass;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,6 +115,8 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.split;
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
 // TODO push all common bits back to plexus cli and prepare for transition to Guice. We don't need 50 ways to make CLIs
@@ -638,6 +642,7 @@ public class MavenCli
             protected void configure()
             {
                 bind( ILoggerFactory.class ).toInstance( slf4jLoggerFactory );
+                bind( Logger.class ).toInstance( new Slf4jLoggerProvider().get() ) ;
                 bind( CoreExports.class ).toInstance( exports );
             }
         } );
@@ -685,6 +690,18 @@ public class MavenCli
         dispatcher = (DefaultSecDispatcher) container.lookup( SecDispatcher.class, "maven" );
 
         return container;
+    }
+    final class Slf4jLoggerProvider implements DeferredProvider<Logger>
+    {
+        public Logger get()
+        {
+            return LoggerFactory.getLogger("");
+        }
+
+        public DeferredClass<Logger> getImplementationClass()
+        {
+            return new LoadedClass<Logger>( get().getClass() );
+        }
     }
 
     private List<CoreExtensionEntry> loadCoreExtensions( CliRequest cliRequest, ClassRealm containerRealm,
@@ -842,9 +859,9 @@ public class MavenCli
 
         List<File> jars = new ArrayList<>();
 
-        if ( StringUtils.isNotEmpty( extClassPath ) )
+        if ( isNotEmpty( extClassPath ) )
         {
-            for ( String jar : StringUtils.split( extClassPath, File.pathSeparator ) )
+            for ( String jar : split( extClassPath, File.pathSeparator ) )
             {
                 File file = resolveFile( new File( jar ), cliRequest.workingDirectory );
 
@@ -1063,7 +1080,7 @@ public class MavenCli
     {
         String referenceKey = "";
 
-        if ( StringUtils.isNotEmpty( summary.getReference() ) )
+        if ( isNotEmpty( summary.getReference() ) )
         {
             referenceKey = references.get( summary.getReference() );
             if ( referenceKey == null )
@@ -1075,7 +1092,7 @@ public class MavenCli
 
         String msg = summary.getMessage();
 
-        if ( StringUtils.isNotEmpty( referenceKey ) )
+        if ( isNotEmpty( referenceKey ) )
         {
             if ( msg.indexOf( '\n' ) < 0 )
             {

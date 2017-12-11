@@ -25,7 +25,6 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.project.DefaultProjectBuilderConfiguration;
 import org.apache.maven.project.ProjectBuilderConfiguration;
 import org.apache.maven.project.path.PathTranslator;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.interpolation.AbstractValueSource;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.interpolation.InterpolationPostProcessor;
@@ -39,10 +38,9 @@ import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.ValueSource;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -63,7 +61,7 @@ import java.util.Properties;
 @Deprecated
 public abstract class AbstractStringBasedModelInterpolator
     extends AbstractLogEnabled
-    implements ModelInterpolator, Initializable
+    implements ModelInterpolator
 {
 
     private static final List<String> PROJECT_PREFIXES = Arrays.asList( "pom.", "project." );
@@ -90,17 +88,20 @@ public abstract class AbstractStringBasedModelInterpolator
         TRANSLATED_PATH_EXPRESSIONS = translatedPrefixes;
     }
 
-    @Requirement
     private PathTranslator pathTranslator;
 
     private Interpolator interpolator;
 
     private RecursionInterceptor recursionInterceptor;
 
+
     // for testing.
-    protected AbstractStringBasedModelInterpolator( PathTranslator pathTranslator )
+    @Inject
+    protected AbstractStringBasedModelInterpolator( final PathTranslator pathTranslator )
     {
         this.pathTranslator = pathTranslator;
+        interpolator = createInterpolator();
+        recursionInterceptor = new PrefixAwareRecursionInterceptor( PROJECT_PREFIXES );
     }
 
     protected AbstractStringBasedModelInterpolator()
@@ -390,13 +391,6 @@ public abstract class AbstractStringBasedModelInterpolator
     }
 
     protected abstract Interpolator createInterpolator();
-
-    public void initialize()
-        throws InitializationException
-    {
-        interpolator = createInterpolator();
-        recursionInterceptor = new PrefixAwareRecursionInterceptor( PROJECT_PREFIXES );
-    }
 
     protected final Interpolator getInterpolator()
     {

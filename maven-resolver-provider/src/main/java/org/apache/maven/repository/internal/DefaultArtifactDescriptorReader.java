@@ -65,11 +65,6 @@ import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.VersionRequest;
 import org.eclipse.aether.resolution.VersionResolutionException;
 import org.eclipse.aether.resolution.VersionResult;
-import org.eclipse.aether.spi.locator.Service;
-import org.eclipse.aether.spi.locator.ServiceLocator;
-import org.eclipse.aether.spi.log.Logger;
-import org.eclipse.aether.spi.log.LoggerFactory;
-import org.eclipse.aether.spi.log.NullLoggerFactory;
 import org.eclipse.aether.transfer.ArtifactNotFoundException;
 
 /**
@@ -78,90 +73,30 @@ import org.eclipse.aether.transfer.ArtifactNotFoundException;
 @Named
 @Singleton
 public class DefaultArtifactDescriptorReader
-    implements ArtifactDescriptorReader, Service
+    implements ArtifactDescriptorReader
 {
 
-    @SuppressWarnings( "unused" )
-    private Logger logger = NullLoggerFactory.LOGGER;
-
+    @Inject
     private RemoteRepositoryManager remoteRepositoryManager;
 
+    @Inject
     private VersionResolver versionResolver;
 
+    @Inject
     private VersionRangeResolver versionRangeResolver;
 
+    @Inject
     private ArtifactResolver artifactResolver;
 
+    @Inject
     private RepositoryEventDispatcher repositoryEventDispatcher;
 
+    @Inject
     private ModelBuilder modelBuilder;
 
     public DefaultArtifactDescriptorReader()
     {
         // enable no-arg constructor
-    }
-
-    @Inject
-    DefaultArtifactDescriptorReader( RemoteRepositoryManager remoteRepositoryManager, VersionResolver versionResolver,
-                                     VersionRangeResolver versionRangeResolver, ArtifactResolver artifactResolver,
-                                     ModelBuilder modelBuilder, RepositoryEventDispatcher repositoryEventDispatcher,
-                                     LoggerFactory loggerFactory )
-    {
-        setRemoteRepositoryManager( remoteRepositoryManager );
-        setVersionResolver( versionResolver );
-        setVersionRangeResolver( versionRangeResolver );
-        setArtifactResolver( artifactResolver );
-        setModelBuilder( modelBuilder );
-        setLoggerFactory( loggerFactory );
-        setRepositoryEventDispatcher( repositoryEventDispatcher );
-    }
-
-    public void initService( ServiceLocator locator )
-    {
-        setRemoteRepositoryManager( locator.getService( RemoteRepositoryManager.class ) );
-        setVersionResolver( locator.getService( VersionResolver.class ) );
-        setVersionRangeResolver( locator.getService( VersionRangeResolver.class ) );
-        setArtifactResolver( locator.getService( ArtifactResolver.class ) );
-        modelBuilder = locator.getService( ModelBuilder.class );
-        if ( modelBuilder == null )
-        {
-            setModelBuilder( new DefaultModelBuilderFactory().newInstance() );
-        }
-        setRepositoryEventDispatcher( locator.getService( RepositoryEventDispatcher.class ) );
-        setLoggerFactory( locator.getService( LoggerFactory.class ) );
-    }
-
-    public DefaultArtifactDescriptorReader setLoggerFactory( LoggerFactory loggerFactory )
-    {
-        this.logger = NullLoggerFactory.getSafeLogger( loggerFactory, getClass() );
-        return this;
-    }
-
-    void setLogger( LoggerFactory loggerFactory )
-    {
-        // plexus support
-        setLoggerFactory( loggerFactory );
-    }
-
-    public DefaultArtifactDescriptorReader setRemoteRepositoryManager( RemoteRepositoryManager remoteRepositoryManager )
-    {
-        this.remoteRepositoryManager = Objects.requireNonNull( remoteRepositoryManager,
-            "remoteRepositoryManager cannot be null" );
-        return this;
-    }
-
-    public DefaultArtifactDescriptorReader setVersionResolver( VersionResolver versionResolver )
-    {
-        this.versionResolver = Objects.requireNonNull( versionResolver, "versionResolver cannot be null" );
-        return this;
-    }
-
-    /** @since 3.2.2 */
-    public DefaultArtifactDescriptorReader setVersionRangeResolver( VersionRangeResolver versionRangeResolver )
-    {
-        this.versionRangeResolver =
-            Objects.requireNonNull( versionRangeResolver, "versionRangeResolver cannot be null" );
-        return this;
     }
 
     public DefaultArtifactDescriptorReader setArtifactResolver( ArtifactResolver artifactResolver )

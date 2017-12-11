@@ -30,12 +30,15 @@ import org.apache.maven.model.building.ModelProblem.Version;
 import org.apache.maven.model.building.ModelProblemCollectorRequest;
 import org.apache.maven.model.path.PathTranslator;
 import org.apache.maven.model.profile.ProfileActivationContext;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.interpolation.AbstractValueSource;
 import org.codehaus.plexus.interpolation.MapBasedValueSource;
 import org.codehaus.plexus.interpolation.RegexBasedInterpolator;
-import org.codehaus.plexus.util.StringUtils;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Determines profile activation based on the existence/absence of some file.
@@ -49,12 +52,13 @@ import org.codehaus.plexus.util.StringUtils;
  * @see ActivationFile
  * @see org.apache.maven.model.validation.DefaultModelValidator#validateRawModel
  */
-@Component( role = ProfileActivator.class, hint = "file" )
+@Named("file")
+@Singleton
 public class FileProfileActivator
     implements ProfileActivator
 {
 
-    @Requirement
+    @Inject
     private PathTranslator pathTranslator;
 
     public FileProfileActivator setPathTranslator( PathTranslator pathTranslator )
@@ -83,12 +87,12 @@ public class FileProfileActivator
         String path;
         boolean missing;
 
-        if ( StringUtils.isNotEmpty( file.getExists() ) )
+        if ( isNotEmpty( file.getExists() ) )
         {
             path = file.getExists();
             missing = false;
         }
-        else if ( StringUtils.isNotEmpty( file.getMissing() ) )
+        else if ( isNotEmpty( file.getMissing() ) )
         {
             path = file.getMissing();
             missing = true;

@@ -36,8 +36,11 @@ import org.apache.maven.model.Reporting;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.model.building.ModelProblemCollector;
 import org.apache.maven.model.merge.MavenModelMerger;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.StringUtils;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * Handles inheritance of model values.
@@ -45,7 +48,8 @@ import org.codehaus.plexus.util.StringUtils;
  * @author Benjamin Bentmann
  */
 @SuppressWarnings( { "checkstyle:methodname" } )
-@Component( role = InheritanceAssembler.class )
+@Named
+@Singleton
 public class DefaultInheritanceAssembler
     implements InheritanceAssembler
 {

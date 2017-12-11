@@ -29,15 +29,20 @@ import java.util.Objects;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.WriterFactory;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 /**
  * Handles serialization of a model into some kind of textual format like XML.
  *
  * @author Benjamin Bentmann
  */
-@Component( role = ModelWriter.class )
+@Named
+@Singleton
 public class DefaultModelWriter
     implements ModelWriter
 {
@@ -74,12 +79,7 @@ public class DefaultModelWriter
         Objects.requireNonNull( output, "output cannot be null" );
         Objects.requireNonNull( model, "model cannot be null" );
 
-        String encoding = model.getModelEncoding();
-        // TODO Use StringUtils here
-        if ( encoding == null || encoding.length() <= 0 )
-        {
-            encoding = "UTF-8";
-        }
+        String encoding = defaultIfEmpty( model.getModelEncoding(), "UTF-8" );
 
         try ( final Writer out = new OutputStreamWriter( output, encoding ) )
         {

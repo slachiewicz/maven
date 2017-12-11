@@ -42,24 +42,27 @@ import org.apache.maven.profiles.ProfileManager;
 import org.apache.maven.properties.internal.EnvironmentUtils;
 import org.apache.maven.repository.RepositorySystem;
 import org.apache.maven.wagon.events.TransferListener;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  */
-@Component( role = MavenProjectBuilder.class )
 @Deprecated
+@Named
+@Singleton
 public class DefaultMavenProjectBuilder
     implements MavenProjectBuilder
 {
 
-    @Requirement
+    @Inject
     private ProjectBuilder projectBuilder;
 
-    @Requirement
+    @Inject
     private RepositorySystem repositorySystem;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
     // ----------------------------------------------------------------------

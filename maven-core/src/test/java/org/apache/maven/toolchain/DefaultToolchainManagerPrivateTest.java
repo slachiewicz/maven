@@ -60,13 +60,12 @@ public class DefaultToolchainManagerPrivateTest
     @Before
     public void setUp()
     {
-        toolchainManager = new DefaultToolchainManagerPrivate();
-
         MockitoAnnotations.initMocks( this );
 
-        toolchainManager.factories = new HashMap<>();
-        toolchainManager.factories.put( "basic", toolchainFactory_basicType );
-        toolchainManager.factories.put( "rare", toolchainFactory_rareType );
+        Map<String, ToolchainFactory> factories = new HashMap<>();
+        factories.put( "basic", toolchainFactory_basicType );
+        factories.put( "rare", toolchainFactory_rareType );
+        toolchainManager = new DefaultToolchainManagerPrivate( factories );
     }
 
     @Test

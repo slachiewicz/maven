@@ -50,24 +50,28 @@ import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.project.ProjectBuildingResult;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.dag.CycleDetectedException;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Builds the {@link ProjectDependencyGraph inter-dependencies graph} between projects in the reactor.
  */
-@Component( role = GraphBuilder.class, hint = GraphBuilder.HINT )
+@Named( GraphBuilder.HINT)
+@Singleton
 public class DefaultGraphBuilder
     implements GraphBuilder
 {
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     protected ProjectBuilder projectBuilder;
 
     @Override
@@ -189,7 +193,7 @@ public class DefaultGraphBuilder
                 makeUpstream = true;
                 makeDownstream = true;
             }
-            else if ( StringUtils.isNotEmpty( request.getMakeBehavior() ) )
+            else if ( isNotEmpty( request.getMakeBehavior() ) )
             {
                 throw new MavenExecutionException( "Invalid reactor make behavior: " + request.getMakeBehavior(),
                                                    request.getPom() );
@@ -282,7 +286,7 @@ public class DefaultGraphBuilder
     {
         List<MavenProject> result = projects;
 
-        if ( StringUtils.isNotEmpty( request.getResumeFrom() ) )
+        if ( isNotEmpty( request.getResumeFrom() ) )
         {
             File reactorDirectory = null;
             if ( request.getBaseDirectory() != null )
@@ -429,7 +433,7 @@ public class DefaultGraphBuilder
                 for ( ModelProblem problem : result.getProblems() )
                 {
                     String loc = ModelProblemUtils.formatLocation( problem, result.getProjectId() );
-                    logger.warn( problem.getMessage() + ( StringUtils.isNotEmpty( loc ) ? " @ " + loc : "" ) );
+                    logger.warn( problem.getMessage() + ( isNotEmpty( loc ) ? " @ " + loc : "" ) );
                 }
 
                 problems = true;

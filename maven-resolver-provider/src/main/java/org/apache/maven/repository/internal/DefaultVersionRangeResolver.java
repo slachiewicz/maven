@@ -40,11 +40,6 @@ import org.eclipse.aether.resolution.MetadataResult;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
-import org.eclipse.aether.spi.locator.Service;
-import org.eclipse.aether.spi.locator.ServiceLocator;
-import org.eclipse.aether.spi.log.Logger;
-import org.eclipse.aether.spi.log.LoggerFactory;
-import org.eclipse.aether.spi.log.NullLoggerFactory;
 import org.eclipse.aether.util.version.GenericVersionScheme;
 import org.eclipse.aether.version.InvalidVersionSpecificationException;
 import org.eclipse.aether.version.Version;
@@ -70,73 +65,23 @@ import java.util.Objects;
 @Named
 @Singleton
 public class DefaultVersionRangeResolver
-    implements VersionRangeResolver, Service
+    implements VersionRangeResolver
 {
 
     private static final String MAVEN_METADATA_XML = "maven-metadata.xml";
 
-    @SuppressWarnings( "unused" )
-    private Logger logger = NullLoggerFactory.LOGGER;
-
+    @Inject
     private MetadataResolver metadataResolver;
 
+    @Inject
     private SyncContextFactory syncContextFactory;
 
+    @Inject
     private RepositoryEventDispatcher repositoryEventDispatcher;
 
     public DefaultVersionRangeResolver()
     {
         // enable default constructor
-    }
-
-    @Inject
-    DefaultVersionRangeResolver( MetadataResolver metadataResolver, SyncContextFactory syncContextFactory,
-                                 RepositoryEventDispatcher repositoryEventDispatcher, LoggerFactory loggerFactory )
-    {
-        setMetadataResolver( metadataResolver );
-        setSyncContextFactory( syncContextFactory );
-        setLoggerFactory( loggerFactory );
-        setRepositoryEventDispatcher( repositoryEventDispatcher );
-    }
-
-    public void initService( ServiceLocator locator )
-    {
-        setLoggerFactory( locator.getService( LoggerFactory.class ) );
-        setMetadataResolver( locator.getService( MetadataResolver.class ) );
-        setSyncContextFactory( locator.getService( SyncContextFactory.class ) );
-        setRepositoryEventDispatcher( locator.getService( RepositoryEventDispatcher.class ) );
-    }
-
-    public DefaultVersionRangeResolver setLoggerFactory( LoggerFactory loggerFactory )
-    {
-        this.logger = NullLoggerFactory.getSafeLogger( loggerFactory, getClass() );
-        return this;
-    }
-
-    void setLogger( LoggerFactory loggerFactory )
-    {
-        // plexus support
-        setLoggerFactory( loggerFactory );
-    }
-
-    public DefaultVersionRangeResolver setMetadataResolver( MetadataResolver metadataResolver )
-    {
-        this.metadataResolver = Objects.requireNonNull( metadataResolver, "metadataResolver cannot be null" );
-        return this;
-    }
-
-    public DefaultVersionRangeResolver setSyncContextFactory( SyncContextFactory syncContextFactory )
-    {
-        this.syncContextFactory = Objects.requireNonNull( syncContextFactory, "syncContextFactory cannot be null" );
-        return this;
-    }
-
-    public DefaultVersionRangeResolver setRepositoryEventDispatcher(
-        RepositoryEventDispatcher repositoryEventDispatcher )
-    {
-        this.repositoryEventDispatcher = Objects.requireNonNull( repositoryEventDispatcher,
-            "repositoryEventDispatcher cannot be null" );
-        return this;
     }
 
     public VersionRangeResult resolveVersionRange( RepositorySystemSession session, VersionRangeRequest request )

@@ -24,6 +24,8 @@ import java.io.File;
 import org.apache.maven.artifact.AbstractArtifactComponentTestCase;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -40,6 +42,13 @@ public class ArtifactDeployerTest
         super.setUp();
 
         artifactDeployer = (ArtifactDeployer) lookup( ArtifactDeployer.ROLE );
+    }
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration containerConfiguration )
+    {
+        super.customizeContainerConfiguration( containerConfiguration );
+        containerConfiguration.setAutoWiring( true );
+        containerConfiguration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
     }
 
     protected String component()

@@ -48,24 +48,28 @@ import org.apache.maven.project.artifact.ArtifactWithDependencies;
 import org.apache.maven.settings.Mirror;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Server;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.RepositorySystemSession;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * @author Benjamin Bentmann
  */
-@Component( role = RepositorySystem.class )
+@Named
+@Singleton
 public class TestRepositorySystem
     implements RepositorySystem
 {
 
-    @Requirement
+    @Inject
     private ModelReader modelReader;
 
-    @Requirement
+    @Inject
     private ArtifactFactory artifactFactory;
 
     public ArtifactRepository buildArtifactRepository( Repository repository )
@@ -145,7 +149,7 @@ public class TestRepositorySystem
         try
         {
             String version = plugin.getVersion();
-            if ( StringUtils.isEmpty( version ) )
+            if ( isEmpty( version ) )
             {
                 version = "RELEASE";
             }

@@ -19,11 +19,8 @@ package org.apache.maven.rtinfo.internal;
  * under the License.
  */
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.maven.rtinfo.RuntimeInformation;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
 import org.eclipse.aether.util.version.GenericVersionScheme;
 import org.eclipse.aether.version.InvalidVersionSpecificationException;
@@ -31,19 +28,25 @@ import org.eclipse.aether.version.Version;
 import org.eclipse.aether.version.VersionConstraint;
 import org.eclipse.aether.version.VersionScheme;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 /**
  * Provides information about the current Maven runtime.
  */
-@Component( role = RuntimeInformation.class )
+@Named
+@Singleton
 public class DefaultRuntimeInformation
     implements RuntimeInformation
 {
 
-    @Requirement
+    @Inject
     private Logger logger;
 
     private String mavenVersion;
@@ -116,7 +119,7 @@ public class DefaultRuntimeInformation
         try
         {
             String mavenVersion = getMavenVersion();
-            Validate.validState( StringUtils.isNotEmpty( mavenVersion ), "Could not determine current Maven version" );
+            Validate.validState( isNotEmpty( mavenVersion ), "Could not determine current Maven version" );
 
             current = versionScheme.parseVersion( mavenVersion );
         }

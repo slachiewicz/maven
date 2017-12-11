@@ -19,16 +19,25 @@ package org.apache.maven.artifact.resolver;
  * under the License.
  */
 
-import org.codehaus.plexus.component.annotations.Component;
+import org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Artifact collector - takes a set of original artifacts and resolves all of the best versions to use
  * along with their metadata. No artifacts are downloaded.
  */
 @Deprecated
-@Component( role = ArtifactCollector.class )
+@Named
+@Singleton
 public class DefaultArtifactCollector
     extends org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector
     implements ArtifactCollector
 {
+    @Inject
+    public DefaultArtifactCollector(final ConflictResolver defaultConflictResolver) {
+        super(defaultConflictResolver);
+    }
 }

@@ -59,11 +59,8 @@ import org.apache.maven.model.building.ModelSource;
 import org.apache.maven.model.building.StringModelSource;
 import org.apache.maven.model.resolution.ModelResolver;
 import org.apache.maven.repository.internal.ArtifactDescriptorUtils;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.RequestTrace;
 import org.eclipse.aether.impl.RemoteRepositoryManager;
@@ -73,36 +70,43 @@ import org.eclipse.aether.repository.WorkspaceRepository;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 /**
  * DefaultProjectBuilder
  */
-@Component( role = ProjectBuilder.class )
+@Named
+@Singleton
 public class DefaultProjectBuilder
     implements ProjectBuilder
 {
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private ModelBuilder modelBuilder;
 
-    @Requirement
+    @Inject
     private ModelProcessor modelProcessor;
 
-    @Requirement
+    @Inject
     private ProjectBuildingHelper projectBuildingHelper;
 
-    @Requirement
+    @Inject
     private MavenRepositorySystem repositorySystem;
 
-    @Requirement
+    @Inject
     private org.eclipse.aether.RepositorySystem repoSystem;
 
-    @Requirement
+    @Inject
     private RemoteRepositoryManager repositoryManager;
 
-    @Requirement
+    @Inject
     private ProjectDependenciesResolver dependencyResolver;
 
     private final ReactorModelCache modelCache = new ReactorModelCache();
@@ -446,7 +450,7 @@ public class DefaultProjectBuilder
 
                 for ( String module : model.getModules() )
                 {
-                    if ( StringUtils.isEmpty( module ) )
+                    if ( isEmpty( module ) )
                     {
                         continue;
                     }
@@ -771,7 +775,7 @@ public class DefaultProjectBuilder
             for ( Extension ext : extensions )
             {
                 String version;
-                if ( StringUtils.isEmpty( ext.getVersion() ) )
+                if ( isEmpty( ext.getVersion() ) )
                 {
                     version = "RELEASE";
                 }
@@ -825,7 +829,7 @@ public class DefaultProjectBuilder
             try
             {
                 DeploymentRepository r = project.getDistributionManagement().getRepository();
-                if ( !StringUtils.isEmpty( r.getId() ) && !StringUtils.isEmpty( r.getUrl() ) )
+                if ( !isEmpty( r.getId() ) && !isEmpty( r.getUrl() ) )
                 {
                     ArtifactRepository repo = repositorySystem.buildArtifactRepository( r );
                     repositorySystem.injectProxy( projectBuildingRequest.getRepositorySession(),
@@ -849,7 +853,7 @@ public class DefaultProjectBuilder
             try
             {
                 DeploymentRepository r = project.getDistributionManagement().getSnapshotRepository();
-                if ( !StringUtils.isEmpty( r.getId() ) && !StringUtils.isEmpty( r.getUrl() ) )
+                if ( !isEmpty( r.getId() ) && !isEmpty( r.getUrl() ) )
                 {
                     ArtifactRepository repo = repositorySystem.buildArtifactRepository( r );
                     repositorySystem.injectProxy( projectBuildingRequest.getRepositorySession(),

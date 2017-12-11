@@ -36,14 +36,18 @@ import org.apache.maven.artifact.repository.metadata.Snapshot;
 import org.apache.maven.artifact.repository.metadata.SnapshotArtifactRepositoryMetadata;
 import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.StringUtils;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.replace;
 
 /**
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @author <a href="mailto:mmaczka@interia.pl">Michal Maczka</a>
  */
-@Component( role = ArtifactTransformation.class, hint = "snapshot" )
+@Named("snapshot")
+@Singleton
 public class SnapshotTransformation
     extends AbstractVersionTransformation
 {
@@ -133,7 +137,7 @@ public class SnapshotTransformation
             if ( snapshot.getTimestamp() != null && snapshot.getBuildNumber() > 0 )
             {
                 String newVersion = snapshot.getTimestamp() + "-" + snapshot.getBuildNumber();
-                version = StringUtils.replace( baseVersion, Artifact.SNAPSHOT_VERSION, newVersion );
+                version = replace( baseVersion, Artifact.SNAPSHOT_VERSION, newVersion );
             }
             else
             {

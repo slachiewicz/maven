@@ -24,16 +24,18 @@ import org.apache.maven.lifecycle.internal.builder.BuilderCommon;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * <p>
@@ -46,10 +48,11 @@ import java.util.TreeSet;
  * @author Jason van Zyl
  * @author Kristian Rosenvold (extracted class only)
  */
-@Component( role = LifecycleDebugLogger.class )
+@Named
+@Singleton
 public class LifecycleDebugLogger
 {
-    @Requirement
+    @Inject
     private Logger logger;
 
 
@@ -164,13 +167,13 @@ public class LifecycleDebugLogger
             MojoDescriptor mojoDescriptor = mojoExecution.getMojoDescriptor();
 
             String scopeToCollect = mojoDescriptor.getDependencyCollectionRequired();
-            if ( StringUtils.isNotEmpty( scopeToCollect ) )
+            if ( isNotEmpty( scopeToCollect ) )
             {
                 scopesToCollect.add( scopeToCollect );
             }
 
             String scopeToResolve = mojoDescriptor.getDependencyResolutionRequired();
-            if ( StringUtils.isNotEmpty( scopeToResolve ) )
+            if ( isNotEmpty( scopeToResolve ) )
             {
                 scopesToResolve.add( scopeToResolve );
             }

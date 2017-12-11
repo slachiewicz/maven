@@ -24,8 +24,10 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Scm;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.building.ModelBuildingRequest;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Normalizes URLs to remove the ugly parent references "../" that got potentially inserted by URL adjustment during
@@ -33,12 +35,13 @@ import org.codehaus.plexus.component.annotations.Requirement;
  *
  * @author Benjamin Bentmann
  */
-@Component( role = ModelUrlNormalizer.class )
+@Named
+@Singleton
 public class DefaultModelUrlNormalizer
     implements ModelUrlNormalizer
 {
 
-    @Requirement
+    @Inject
     private UrlNormalizer urlNormalizer;
 
     public DefaultModelUrlNormalizer setUrlNormalizer( UrlNormalizer urlNormalizer )

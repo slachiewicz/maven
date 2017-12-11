@@ -51,29 +51,36 @@ import org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalExce
 import org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
 import org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
 import org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @author Jason van Zyl
  */
-@Component( role = LegacyArtifactCollector.class )
+@Named
+@Singleton
 public class DefaultLegacyArtifactCollector
     implements LegacyArtifactCollector
 {
 
-    @Requirement( hint = "nearest" )
     private ConflictResolver defaultConflictResolver;
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
-    private void injectSession( ArtifactResolutionRequest request )
+    @Inject
+    public DefaultLegacyArtifactCollector(final ConflictResolver defaultConflictResolver) {
+        this.defaultConflictResolver = defaultConflictResolver;
+    }
+
+    private void injectSession(ArtifactResolutionRequest request )
     {
         MavenSession session = legacySupport.getSession();
 

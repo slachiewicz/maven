@@ -29,14 +29,17 @@ import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.model.building.ModelProblemCollector;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Handles the import of dependency management from other models into the target model.
  *
  * @author Benjamin Bentmann
  */
-@Component( role = DependencyManagementImporter.class )
+@Named
+@Singleton
 public class DefaultDependencyManagementImporter
     implements DependencyManagementImporter
 {

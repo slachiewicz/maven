@@ -19,16 +19,17 @@ package org.apache.maven.model.path;
  * under the License.
  */
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.File;
-
-import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Resolves relative paths against a specific base directory.
  *
  * @author Benjamin Bentmann
  */
-@Component( role = PathTranslator.class )
+@Named
+@Singleton
 public class DefaultPathTranslator
     implements PathTranslator
 {

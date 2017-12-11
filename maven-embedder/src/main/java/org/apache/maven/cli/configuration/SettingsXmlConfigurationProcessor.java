@@ -43,14 +43,15 @@ import org.apache.maven.settings.building.SettingsBuildingRequest;
 import org.apache.maven.settings.building.SettingsBuildingResult;
 import org.apache.maven.settings.building.SettingsProblem;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.slf4j.Logger;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * SettingsXmlConfigurationProcessor
  */
-@Component( role = ConfigurationProcessor.class, hint = SettingsXmlConfigurationProcessor.HINT )
 public class SettingsXmlConfigurationProcessor
     implements ConfigurationProcessor
 {
@@ -65,13 +66,13 @@ public class SettingsXmlConfigurationProcessor
     public static final File DEFAULT_GLOBAL_SETTINGS_FILE =
         new File( System.getProperty( "maven.conf" ), "settings.xml" );
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private SettingsBuilder settingsBuilder;
 
-    @Requirement
+    @Inject
     private SettingsDecrypter settingsDecrypter;
 
     @Override

@@ -26,6 +26,8 @@ import java.util.Objects;
 import org.eclipse.aether.artifact.AbstractArtifact;
 import org.eclipse.aether.artifact.Artifact;
 
+import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
+
 /**
  * @author Benjamin Bentmann
  */

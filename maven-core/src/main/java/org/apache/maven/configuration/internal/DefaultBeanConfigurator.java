@@ -27,7 +27,6 @@ import org.apache.maven.configuration.BeanConfigurationPathTranslator;
 import org.apache.maven.configuration.BeanConfigurationRequest;
 import org.apache.maven.configuration.BeanConfigurationValuePreprocessor;
 import org.apache.maven.configuration.BeanConfigurator;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
@@ -38,13 +37,17 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * <strong>Warning:</strong> This is an internal class that is only public for technical reasons, it is not part of the
  * public API. In particular, this class can be changed or deleted without prior notice.
  *
  * @author Benjamin Bentmann
  */
-@Component( role = BeanConfigurator.class )
+@Named
+@Singleton
 public class DefaultBeanConfigurator
     implements BeanConfigurator
 {

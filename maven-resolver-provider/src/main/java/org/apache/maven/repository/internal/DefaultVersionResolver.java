@@ -23,7 +23,6 @@ import org.apache.maven.artifact.repository.metadata.Snapshot;
 import org.apache.maven.artifact.repository.metadata.SnapshotVersion;
 import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
-import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.RepositoryCache;
 import org.eclipse.aether.RepositoryEvent;
 import org.eclipse.aether.RepositoryEvent.EventType;
@@ -48,11 +47,6 @@ import org.eclipse.aether.resolution.MetadataResult;
 import org.eclipse.aether.resolution.VersionRequest;
 import org.eclipse.aether.resolution.VersionResolutionException;
 import org.eclipse.aether.resolution.VersionResult;
-import org.eclipse.aether.spi.locator.Service;
-import org.eclipse.aether.spi.locator.ServiceLocator;
-import org.eclipse.aether.spi.log.Logger;
-import org.eclipse.aether.spi.log.LoggerFactory;
-import org.eclipse.aether.spi.log.NullLoggerFactory;
 import org.eclipse.aether.util.ConfigUtils;
 
 import javax.inject.Inject;
@@ -70,13 +64,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.stripToEmpty;
+
 /**
  * @author Benjamin Bentmann
  */
 @Named
 @Singleton
 public class DefaultVersionResolver
-    implements VersionResolver, Service
+    implements VersionResolver
 {
 
     private static final String MAVEN_METADATA_XML = "maven-metadata.xml";
@@ -87,13 +85,13 @@ public class DefaultVersionResolver
 
     private static final String SNAPSHOT = "SNAPSHOT";
 
-    @SuppressWarnings( "unused" )
-    private Logger logger = NullLoggerFactory.LOGGER;
-
+    @Inject
     private MetadataResolver metadataResolver;
 
+    @Inject
     private SyncContextFactory syncContextFactory;
 
+    @Inject
     private RepositoryEventDispatcher repositoryEventDispatcher;
 
     public DefaultVersionResolver()
@@ -292,7 +290,7 @@ public class DefaultVersionResolver
                 }
             }
 
-            if ( StringUtils.isEmpty( result.getVersion() ) )
+            if ( isEmpty( result.getVersion() ) )
             {
                 throw new VersionResolutionException( result );
             }
@@ -383,19 +381,19 @@ public class DefaultVersionResolver
     private void merge( Artifact artifact, Map<String, VersionInfo> infos, Versioning versioning,
                         ArtifactRepository repository )
     {
-        if ( StringUtils.isNotEmpty( versioning.getRelease() ) )
+        if ( isNotEmpty( versioning.getRelease() ) )
         {
             merge( RELEASE, infos, versioning.getLastUpdated(), versioning.getRelease(), repository );
         }
 
-        if ( StringUtils.isNotEmpty( versioning.getLatest() ) )
+        if ( isNotEmpty( versioning.getLatest() ) )
         {
             merge( LATEST, infos, versioning.getLastUpdated(), versioning.getLatest(), repository );
         }
 
         for ( SnapshotVersion sv : versioning.getSnapshotVersions() )
         {
-            if ( StringUtils.isNotEmpty( sv.getVersion() ) )
+            if ( isNotEmpty( sv.getVersion() ) )
             {
                 String key = getKey( sv.getClassifier(), sv.getExtension() );
                 merge( SNAPSHOT + key, infos, sv.getUpdated(), sv.getVersion(), repository );
@@ -446,7 +444,7 @@ public class DefaultVersionResolver
 
     private String getKey( String classifier, String extension )
     {
-        return StringUtils.clean( classifier ) + ':' + StringUtils.clean( extension );
+        return stripToEmpty( classifier ) + ':' + stripToEmpty( extension );
     }
 
     private boolean isSafelyCacheable( RepositorySystemSession session, Artifact artifact )

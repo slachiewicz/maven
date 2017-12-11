@@ -29,11 +29,13 @@ import org.apache.maven.toolchain.RequirementMatcherFactory;
 import org.apache.maven.toolchain.ToolchainFactory;
 import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.model.ToolchainModel;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * JDK toolchain factory.
@@ -43,12 +45,13 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * @author mkleint
  * @since 2.0.9, renamed from <code>DefaultJavaToolchainFactory</code> in 3.2.4
  */
-@Component( role = ToolchainFactory.class, hint = "jdk" )
+@Named("jdk")
+@Singleton
 public class JavaToolchainFactory
     implements ToolchainFactory
 {
 
-    @Requirement
+    @Inject
     private Logger logger;
 
     public ToolchainPrivate createToolchain( ToolchainModel model )

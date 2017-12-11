@@ -23,7 +23,8 @@ import org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator;
 import org.apache.maven.lifecycle.internal.LifecycleModuleBuilder;
 import org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator;
 import org.apache.maven.lifecycle.internal.MojoExecutor;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import javax.inject.Inject;
 
 /**
  * Just asserts that it's able to create those components. Handy when plexus gets a nervous breakdown.
@@ -34,25 +35,25 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class LifecycleExecutorSubModulesTest
     extends AbstractCoreMavenComponentTestCase
 {
-    @Requirement
+    @Inject
     private DefaultLifecycles defaultLifeCycles;
 
-    @Requirement
+    @Inject
     private MojoExecutor mojoExecutor;
 
-    @Requirement
+    @Inject
     private LifecycleModuleBuilder lifeCycleBuilder;
 
-    @Requirement
+    @Inject
     private LifecycleDependencyResolver lifeCycleDependencyResolver;
 
-    @Requirement
+    @Inject
     private LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator;
 
-    @Requirement
+    @Inject
     private LifeCyclePluginAnalyzer lifeCyclePluginAnalyzer;
 
-    @Requirement
+    @Inject
     private LifecycleTaskSegmentCalculator lifeCycleTaskSegmentCalculator;
 
 

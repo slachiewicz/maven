@@ -33,8 +33,10 @@ import org.apache.maven.lifecycle.internal.builder.BuilderCommon;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.session.scope.internal.SessionScope;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * <p>
@@ -47,26 +49,27 @@ import org.codehaus.plexus.component.annotations.Requirement;
  * @author Jason van Zyl
  * @author Kristian Rosenvold (extracted class)
  */
-@Component( role = LifecycleModuleBuilder.class )
+@Named
+@Singleton
 public class LifecycleModuleBuilder
 {
 
-    @Requirement
+    @Inject
     private MojoExecutor mojoExecutor;
 
-    @Requirement
+    @Inject
     private BuilderCommon builderCommon;
 
-    @Requirement
+    @Inject
     private ExecutionEventCatapult eventCatapult;
 
     private ProjectExecutionListener projectExecutionListener;
 
     // this tricks plexus-component-metadata generate required metadata
-    @Requirement
+    @Inject
     private List<ProjectExecutionListener> projectExecutionListeners;
 
-    @Requirement
+    @Inject
     private SessionScope sessionScope;
 
     public void setProjectExecutionListeners( final List<ProjectExecutionListener> listeners )
