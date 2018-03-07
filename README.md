@@ -1,4 +1,6 @@
 # Maven
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslachiewicz%2Fmaven.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslachiewicz%2Fmaven?ref=badge_shield)
+
 
 Maven is available under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
@@ -21,3 +23,7 @@ mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.5.x-SNAPSHOT" clean 
 ```
 
 Once the build completes, you should have a new Maven distro ready to roll in that directory!
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslachiewicz%2Fmaven.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslachiewicz%2Fmaven?ref=badge_large)
