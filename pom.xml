@@ -602,6 +602,14 @@ under the License.
             <skip>true</skip>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-remote-resources-plugin</artifactId>
+          <version>1.6.0</version>
+          <configuration>
+            <!-- https://issues.apache.org/jira/browse/MRRESOURCES-92 -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
