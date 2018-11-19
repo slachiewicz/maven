@@ -584,6 +584,24 @@ under the License.
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <!-- TODO remove when upgrade to apache-22 parent pom -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+        <!-- overwrites to prepare plugins 3.0+ ready -->
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.0.0-M2</version>
+          <configuration>
+            <!-- skip until enforcer plugin will be updated to 3.0+ api
+                  https://issues.apache.org/jira/browse/MENFORCER-277
+                  https://issues.apache.org/jira/browse/MENFORCER-267
+            -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
