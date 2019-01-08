@@ -1,4 +1,4 @@
-package org.slf4j.impl;
+package org.slf4j.simple;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

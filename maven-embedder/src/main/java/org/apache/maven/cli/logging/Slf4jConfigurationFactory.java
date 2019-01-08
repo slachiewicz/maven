@@ -47,7 +47,7 @@ public class Slf4jConfigurationFactory
     {
         Map<URL, Set<Object>> supported = new LinkedHashMap<>();
 
-        String slf4jBinding = loggerFactory.getClass().getCanonicalName();
+        String slf4jProvider = loggerFactory.getClass().getCanonicalName();
 
         try
         {
@@ -59,7 +59,7 @@ public class Slf4jConfigurationFactory
 
                 Properties conf = PropertyUtils.loadProperties( resource.openStream() );
 
-                String impl = conf.getProperty( slf4jBinding );
+                String impl = conf.getProperty( slf4jProvider );
 
                 if ( impl != null )
                 {
@@ -74,6 +74,6 @@ public class Slf4jConfigurationFactory
             e.printStackTrace();
         }
 
-        return new UnsupportedSlf4jBindingConfiguration( slf4jBinding, supported );
+        return new UnsupportedSlf4jBindingConfiguration( slf4jProvider, supported );
     }
 }

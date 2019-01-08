@@ -52,6 +52,19 @@ under the License.
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludes combine.children="append">
+              <exclude>src/main/resources/META-INF/services/org.slf4j.spi.SLF4JServiceProvider</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -66,8 +79,8 @@ under the License.
               <classifier>sources</classifier>
               <overWrite>false</overWrite>
               <outputDirectory>${project.build.directory}/generated-sources/slf4j-simple</outputDirectory>
-              <includes>org/slf4j/impl/*.java</includes>
-              <excludes>org/slf4j/impl/StaticLoggerBinder*</excludes>
+              <includes>org/slf4j/simple/*.java</includes>
+              <!--<excludes>META-INF/services/org.slf4j.spi.SLF4JServiceProvider</excludes>-->
             </artifactItem>
           </artifactItems>
         </configuration>
