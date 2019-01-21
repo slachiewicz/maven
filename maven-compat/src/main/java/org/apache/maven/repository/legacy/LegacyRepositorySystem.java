@@ -82,7 +82,7 @@ import org.eclipse.aether.repository.RemoteRepository;
 /**
  * @author Jason van Zyl
  */
-@Component( role = RepositorySystem.class, hint = "default" )
+@Component( role = RepositorySystem.class, hint = "legacy" )
 public class LegacyRepositorySystem
     implements RepositorySystem
 {

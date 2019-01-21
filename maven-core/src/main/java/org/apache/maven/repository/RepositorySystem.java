@@ -39,6 +39,7 @@ import org.eclipse.aether.RepositorySystemSession;
 /**
  * @author Jason van Zyl
  * @since 3.0-alpha
+ *  deprecated use org.apache.maven.bridge.MavenRepositorySystem
  */
 public interface RepositorySystem
 {
@@ -57,31 +58,42 @@ public interface RepositorySystem
 
     String DEFAULT_REMOTE_REPO_URL = "https://repo.maven.apache.org/maven2";
 
+    @Deprecated
     Artifact createArtifact( String groupId, String artifactId, String version, String packaging );
 
+    @Deprecated
     Artifact createArtifact( String groupId, String artifactId, String version, String scope, String type );
 
+    @Deprecated
     Artifact createProjectArtifact( String groupId, String artifactId, String version );
 
+    @Deprecated
     Artifact createArtifactWithClassifier( String groupId, String artifactId, String version, String type,
                                            String classifier );
 
+    @Deprecated
     Artifact createPluginArtifact( Plugin plugin );
 
+    @Deprecated
     Artifact createDependencyArtifact( Dependency dependency );
 
+    @Deprecated
     ArtifactRepository buildArtifactRepository( Repository repository )
         throws InvalidRepositoryException;
 
+    @Deprecated
     ArtifactRepository createDefaultRemoteRepository()
         throws InvalidRepositoryException;
 
+    @Deprecated
     ArtifactRepository createDefaultLocalRepository()
         throws InvalidRepositoryException;
 
+    @Deprecated
     ArtifactRepository createLocalRepository( File localRepository )
         throws InvalidRepositoryException;
 
+    @Deprecated
     ArtifactRepository createArtifactRepository( String id, String url, ArtifactRepositoryLayout repositoryLayout,
                                                  ArtifactRepositoryPolicy snapshots,
                                                  ArtifactRepositoryPolicy releases );
@@ -95,6 +107,7 @@ public interface RepositorySystem
      * @param repositories The original repositories, may be {@code null}.
      * @return The effective repositories or {@code null} if the input was {@code null}.
      */
+    @Deprecated
     List<ArtifactRepository> getEffectiveRepositories( List<ArtifactRepository> repositories );
 
     /**
@@ -104,6 +117,7 @@ public interface RepositorySystem
      * @param mirrors The available mirrors, may be {@code null}.
      * @return The mirror specification for the repository or {@code null} if no mirror matched.
      */
+    @Deprecated
     Mirror getMirror( ArtifactRepository repository, List<Mirror> mirrors );
 
     /**
@@ -115,6 +129,7 @@ public interface RepositorySystem
      * @param repositories The repositories into which to inject the mirror information, may be {@code null}.
      * @param mirrors The available mirrors, may be {@code null}.
      */
+    @Deprecated
     void injectMirror( List<ArtifactRepository> repositories, List<Mirror> mirrors );
 
     /**
@@ -126,6 +141,7 @@ public interface RepositorySystem
      * @param repositories The repositories into which to inject the proxy information, may be {@code null}.
      * @param proxies The available proxies, may be {@code null}.
      */
+    @Deprecated
     void injectProxy( List<ArtifactRepository> repositories, List<org.apache.maven.settings.Proxy> proxies );
 
     /**
@@ -137,14 +153,19 @@ public interface RepositorySystem
      * @param repositories The repositories into which to inject the authentication information, may be {@code null}.
      * @param servers The available servers, may be {@code null}.
      */
+    @Deprecated
     void injectAuthentication( List<ArtifactRepository> repositories, List<Server> servers );
 
+    @Deprecated
     void injectMirror( RepositorySystemSession session, List<ArtifactRepository> repositories );
 
+    @Deprecated
     void injectProxy( RepositorySystemSession session, List<ArtifactRepository> repositories );
 
+    @Deprecated
     void injectAuthentication( RepositorySystemSession session, List<ArtifactRepository> repositories );
 
+    @Deprecated
     ArtifactResolutionResult resolve( ArtifactResolutionRequest request );
 
     // Install
@@ -156,10 +177,12 @@ public interface RepositorySystem
     //
     // Raw file transfers
     //
+    @Deprecated
     void publish( ArtifactRepository repository, File source, String remotePath,
                   ArtifactTransferListener transferListener )
         throws ArtifactTransferFailedException;
 
+    @Deprecated
     void retrieve( ArtifactRepository repository, File destination, String remotePath,
                    ArtifactTransferListener transferListener )
         throws ArtifactTransferFailedException, ArtifactDoesNotExistException;

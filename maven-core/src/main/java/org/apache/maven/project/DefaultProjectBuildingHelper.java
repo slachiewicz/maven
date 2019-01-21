@@ -138,7 +138,7 @@ public class DefaultProjectBuildingHelper
             }
         }
 
-        artifactRepositories = repositorySystem.getEffectiveRepositories( artifactRepositories );
+        artifactRepositories = MavenRepositorySystem.getEffectiveRepositories( artifactRepositories );
 
         return artifactRepositories;
     }

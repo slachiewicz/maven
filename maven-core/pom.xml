@@ -141,6 +141,10 @@ under the License.
       <artifactId>hamcrest-library</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.apache.maven.wagon</groupId>
+          <artifactId>wagon-provider-api</artifactId>
+      </dependency>
   </dependencies>
 
   <build>
