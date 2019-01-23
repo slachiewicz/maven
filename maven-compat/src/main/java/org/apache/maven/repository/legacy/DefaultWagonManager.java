@@ -47,14 +47,16 @@ import org.apache.maven.wagon.observers.ChecksumObserver;
 import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.aether.ConfigurationProperties;
 import org.eclipse.aether.util.ConfigUtils;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 //TODO remove the update check manager
 //TODO separate into retriever and publisher
@@ -63,7 +65,8 @@ import org.eclipse.aether.util.ConfigUtils;
 /**
  * Manages <a href="https://maven.apache.org/wagon">Wagon</a> related operations in Maven.
  */
-@Component( role = WagonManager.class )
+@Named
+@Singleton
 public class DefaultWagonManager
     implements WagonManager
 {
@@ -81,16 +84,16 @@ public class DefaultWagonManager
         "MD5", "SHA-1"
     };
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private PlexusContainer container;
 
-    @Requirement
+    @Inject
     private UpdateCheckManager updateCheckManager;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
     //

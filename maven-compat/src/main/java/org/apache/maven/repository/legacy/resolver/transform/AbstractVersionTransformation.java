@@ -35,8 +35,9 @@ import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.repository.legacy.WagonManager;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+
+import javax.inject.Inject;
 
 /**
  * Describes a version transformation during artifact resolution.
@@ -48,10 +49,10 @@ public abstract class AbstractVersionTransformation
     extends AbstractLogEnabled
     implements ArtifactTransformation
 {
-    @Requirement
+    @Inject
     protected RepositoryMetadataManager repositoryMetadataManager;
 
-    @Requirement
+    @Inject
     protected WagonManager wagonManager;
 
     public void transformForResolve( Artifact artifact, List<ArtifactRepository> remoteRepositories,

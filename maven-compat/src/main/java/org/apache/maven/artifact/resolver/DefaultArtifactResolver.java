@@ -56,8 +56,6 @@ import org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
 import org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver;
 import org.apache.maven.wagon.events.TransferListener;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
@@ -67,35 +65,40 @@ import org.eclipse.aether.repository.LocalRepositoryManager;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * @author Jason van Zyl
  */
-@Component( role = ArtifactResolver.class )
+@Named
+@Singleton
 public class DefaultArtifactResolver
     implements ArtifactResolver, Disposable
 {
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     protected ArtifactFactory artifactFactory;
 
-    @Requirement
+    @Inject
     private ArtifactCollector artifactCollector;
 
-    @Requirement
+    @Inject
     private ResolutionErrorHandler resolutionErrorHandler;
 
-    @Requirement
+    @Inject
     private ArtifactMetadataSource source;
 
-    @Requirement
+    @Inject
     private PlexusContainer container;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
-    @Requirement
+    @Inject
     private RepositorySystem repoSystem;
 
     private final Executor executor;

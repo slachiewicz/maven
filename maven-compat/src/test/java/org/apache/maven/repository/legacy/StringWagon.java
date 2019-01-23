@@ -35,9 +35,12 @@ import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.authentication.AuthenticationException;
 import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.resource.Resource;
-import org.codehaus.plexus.component.annotations.Component;
 
-@Component(role=Wagon.class,hint="string")
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+@Named("string")
+@Singleton
 public class StringWagon
     extends StreamWagon
 {

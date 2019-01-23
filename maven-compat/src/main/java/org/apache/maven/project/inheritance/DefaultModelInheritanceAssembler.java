@@ -43,14 +43,18 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.model.Scm;
 import org.apache.maven.model.Site;
 import org.apache.maven.project.ModelUtils;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * DefaultModelInheritanceAssembler
  */
-@Component( role = ModelInheritanceAssembler.class )
+@Named
+@Singleton
 public class DefaultModelInheritanceAssembler
     implements ModelInheritanceAssembler
 {
@@ -149,21 +153,21 @@ public class DefaultModelInheritanceAssembler
                 child.setScm( childScm );
             }
 
-            if ( StringUtils.isEmpty( childScm.getConnection() ) && !StringUtils.isEmpty( parentScm.getConnection() ) )
+            if ( isEmpty( childScm.getConnection() ) && !isEmpty( parentScm.getConnection() ) )
             {
                 childScm.setConnection(
                     appendPath( parentScm.getConnection(), child.getArtifactId(), childPathAdjustment, appendPaths ) );
             }
 
-            if ( StringUtils.isEmpty( childScm.getDeveloperConnection() )
-                && !StringUtils.isEmpty( parentScm.getDeveloperConnection() ) )
+            if ( isEmpty( childScm.getDeveloperConnection() )
+                && !isEmpty( parentScm.getDeveloperConnection() ) )
             {
                 childScm
                     .setDeveloperConnection( appendPath( parentScm.getDeveloperConnection(), child.getArtifactId(),
                                                          childPathAdjustment, appendPaths ) );
             }
 
-            if ( StringUtils.isEmpty( childScm.getUrl() ) && !StringUtils.isEmpty( parentScm.getUrl() ) )
+            if ( isEmpty( childScm.getUrl() ) && !isEmpty( parentScm.getUrl() ) )
             {
                 childScm.setUrl(
                     appendPath( parentScm.getUrl(), child.getArtifactId(), childPathAdjustment, appendPaths ) );
@@ -353,7 +357,7 @@ public class DefaultModelInheritanceAssembler
 
             childReporting.setExcludeDefaults( parentReporting.isExcludeDefaults() );
 
-            if ( StringUtils.isEmpty( childReporting.getOutputDirectory() ) )
+            if ( isEmpty( childReporting.getOutputDirectory() ) )
             {
                 childReporting.setOutputDirectory( parentReporting.getOutputDirectory() );
             }
@@ -623,7 +627,7 @@ public class DefaultModelInheritanceAssembler
                 }
             }
 
-            if ( StringUtils.isEmpty( childDistMgmt.getDownloadUrl() ) )
+            if ( isEmpty( childDistMgmt.getDownloadUrl() ) )
             {
                 childDistMgmt.setDownloadUrl( parentDistMgmt.getDownloadUrl() );
             }

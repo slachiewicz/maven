@@ -34,8 +34,6 @@ import org.apache.maven.artifact.repository.metadata.MetadataBridge;
 import org.apache.maven.artifact.repository.metadata.SnapshotArtifactRepositoryMetadata;
 import org.apache.maven.plugin.LegacySupport;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -47,19 +45,24 @@ import org.eclipse.aether.metadata.MergeableMetadata;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.util.artifact.SubArtifact;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * DefaultArtifactDeployer
  */
-@Component( role = ArtifactDeployer.class, instantiationStrategy = "per-lookup" )
+@Named("per-lookup")
+@Singleton
 public class DefaultArtifactDeployer
     extends AbstractLogEnabled
     implements ArtifactDeployer
 {
 
-    @Requirement
+    @Inject
     private RepositorySystem repoSystem;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
     private Map<Object, MergeableMetadata> relatedMetadata = new ConcurrentHashMap<>();

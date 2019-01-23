@@ -35,6 +35,8 @@ import org.apache.maven.artifact.metadata.ResolutionGroup;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
 
 // It would be cool if there was a hook that i could use to setup a test environment.
 // I want to setup a local/remote repositories for testing but i don't want to have
@@ -61,6 +63,14 @@ public class ArtifactResolverTest
         artifactResolver = (DefaultArtifactResolver) lookup( ArtifactResolver.class );
 
         projectArtifact = createLocalArtifact( "project", "3.0" );
+    }
+
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration containerConfiguration )
+    {
+        super.customizeContainerConfiguration( containerConfiguration );
+        containerConfiguration.setAutoWiring( true );
+        containerConfiguration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
     }
 
     @Override

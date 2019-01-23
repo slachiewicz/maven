@@ -28,20 +28,29 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.RepositoryRequest;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author Jason van Zyl
  */
-@Component( role = ArtifactTransformationManager.class )
+@Named
+@Singleton
 public class DefaultArtifactTransformationManager
     implements ArtifactTransformationManager
 {
-    @Requirement( role = ArtifactTransformation.class, hints = { "release", "latest", "snapshot" } )
+    // TODO
+    @Inject// hints = { "release", "latest", "snapshot" } )
     private List<ArtifactTransformation> artifactTransformations;
 
-    public void transformForResolve( Artifact artifact, RepositoryRequest request )
+    @Inject
+    public DefaultArtifactTransformationManager(final List<ArtifactTransformation> artifactTransformations) {
+        this.artifactTransformations = artifactTransformations;
+    }
+
+    public void transformForResolve(Artifact artifact, RepositoryRequest request )
         throws ArtifactResolutionException, ArtifactNotFoundException
     {
         for ( ArtifactTransformation transform : artifactTransformations )

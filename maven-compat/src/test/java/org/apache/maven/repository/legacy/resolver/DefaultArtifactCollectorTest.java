@@ -37,6 +37,8 @@ import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
 import org.apache.maven.artifact.versioning.OverConstrainedVersionException;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.util.ArrayList;
@@ -79,6 +81,14 @@ public class DefaultArtifactCollectorTest
 
         projectArtifact = createArtifactSpec( "project", "1.0", null );
     }
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration containerConfiguration )
+    {
+        super.customizeContainerConfiguration( containerConfiguration );
+        containerConfiguration.setAutoWiring( true );
+        containerConfiguration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
+    }
+
 
     @Override
     protected void tearDown()

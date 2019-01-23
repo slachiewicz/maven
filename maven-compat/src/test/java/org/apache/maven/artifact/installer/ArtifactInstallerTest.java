@@ -23,6 +23,8 @@ import java.io.File;
 
 import org.apache.maven.artifact.AbstractArtifactComponentTestCase;
 import org.apache.maven.artifact.Artifact;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -38,6 +40,14 @@ public class ArtifactInstallerTest
         super.setUp();
 
         artifactInstaller = (ArtifactInstaller) lookup( ArtifactInstaller.ROLE );
+    }
+
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration containerConfiguration )
+    {
+        super.customizeContainerConfiguration( containerConfiguration );
+        containerConfiguration.setAutoWiring( true );
+        containerConfiguration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
     }
 
     protected String component()

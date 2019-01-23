@@ -27,13 +27,16 @@ import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.repository.MavenArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout2;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author jdcasey
  */
-@Component( role = ArtifactRepositoryFactory.class )
+@Named
+@Singleton
 public class DefaultArtifactRepositoryFactory
     implements ArtifactRepositoryFactory
 {
@@ -42,8 +45,12 @@ public class DefaultArtifactRepositoryFactory
 
     private String globalChecksumPolicy;
 
-    @Requirement( role = ArtifactRepositoryLayout.class )
     private Map<String, ArtifactRepositoryLayout> repositoryLayouts;
+
+    @Inject
+    public DefaultArtifactRepositoryFactory(final Map<String, ArtifactRepositoryLayout> repositoryLayouts) {
+        this.repositoryLayouts = repositoryLayouts;
+    }
 
     public ArtifactRepositoryLayout getLayout( String layoutId )
         throws UnknownRepositoryLayoutException

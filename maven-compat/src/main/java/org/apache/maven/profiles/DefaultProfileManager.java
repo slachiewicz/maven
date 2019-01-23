@@ -27,7 +27,6 @@ import org.apache.maven.model.profile.ProfileSelector;
 import org.apache.maven.profiles.activation.ProfileActivationException;
 import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
 
@@ -37,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.inject.Inject;
+
 /**
  * DefaultProfileManager
  */
@@ -45,10 +46,10 @@ public class DefaultProfileManager
     implements ProfileManager
 {
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private ProfileSelector profileSelector;
 
     private List<String> activatedIds = new ArrayList<>();

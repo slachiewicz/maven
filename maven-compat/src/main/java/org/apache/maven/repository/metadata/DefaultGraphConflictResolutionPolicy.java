@@ -21,30 +21,38 @@ package org.apache.maven.repository.metadata;
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Configuration;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author <a href="mailto:oleg@codehaus.org">Oleg Gusakov</a>
  *
  */
-@Component( role = GraphConflictResolutionPolicy.class )
+@Named
+@Singleton
 public class DefaultGraphConflictResolutionPolicy
     implements GraphConflictResolutionPolicy
 {
     /**
      * artifact, closer to the entry point, is selected
      */
-    @Configuration( name = "closer-first", value = "true" )
     private boolean closerFirst = true;
 
     /**
      * newer artifact is selected
      */
-    @Configuration( name = "newer-first", value = "true" )
     private boolean newerFirst = true;
 
-    public MetadataGraphEdge apply( MetadataGraphEdge e1, MetadataGraphEdge e2 )
+    @Inject
+    public DefaultGraphConflictResolutionPolicy(final @Named("closer-first:-true") boolean closerFirst,
+                                                final @Named("newer-first:-true") boolean newerFirst) {
+        this.closerFirst = closerFirst;
+        this.newerFirst = newerFirst;
+    }
+
+    public MetadataGraphEdge apply(MetadataGraphEdge e1, MetadataGraphEdge e2 )
     {
         int depth1 = e1.getDepth();
         int depth2 = e2.getDepth();

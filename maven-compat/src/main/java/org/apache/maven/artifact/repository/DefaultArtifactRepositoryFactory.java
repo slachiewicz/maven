@@ -26,25 +26,28 @@ import org.apache.maven.artifact.UnknownRepositoryLayoutException;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.LegacySupport;
 import org.apache.maven.repository.RepositorySystem;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.aether.RepositorySystemSession;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author jdcasey
  */
-@Component( role = ArtifactRepositoryFactory.class )
+@Named
+@Singleton
 public class DefaultArtifactRepositoryFactory
     implements ArtifactRepositoryFactory
 {
 
-    @Requirement
+    @Inject
     private org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory factory;
 
-    @Requirement
+    @Inject
     private LegacySupport legacySupport;
 
-    @Requirement
+    @Inject
     private RepositorySystem repositorySystem;
 
     public ArtifactRepositoryLayout getLayout( String layoutId )

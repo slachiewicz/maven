@@ -26,12 +26,15 @@ import org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutio
 import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Describes a version transformation during artifact resolution - "latest" type
  */
-@Component( role = ArtifactTransformation.class, hint = "latest" )
+@Named("latest")
+@Singleton
 public class LatestArtifactTransformation
     extends AbstractVersionTransformation
 {
