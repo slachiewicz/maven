@@ -19,11 +19,13 @@ package org.apache.maven.lifecycle;
  * under the License.
  */
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
 
+import com.google.common.base.Preconditions;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.apache.commons.lang3.StringUtils.join;
+
 /**
  * @since 3.0
  * @author Jason van Zyl
@@ -40,26 +44,26 @@ import java.util.Set;
  */
 // TODO The configuration for the lifecycle needs to be externalized so that I can use the annotations properly for the
 // wiring and reference and external source for the lifecycle configuration.
-@Component( role = DefaultLifecycles.class )
+@Named
+@Singleton
 public class DefaultLifecycles
 {
     public static final String[] STANDARD_LIFECYCLES = { "default", "clean", "site" };
 
     // @Configuration(source="org/apache/maven/lifecycle/lifecycles.xml")
 
-    @Requirement( role = Lifecycle.class )
     private Map<String, Lifecycle> lifecycles;
 
-    @Requirement
+    @Inject
     private Logger logger;
 
     public DefaultLifecycles()
     {
     }
 
-    public DefaultLifecycles( Map<String, Lifecycle> lifecycles, Logger logger )
+    @Inject
+    public DefaultLifecycles( final Map<String, Lifecycle> lifecycles, Logger logger )
     {
-        this.lifecycles = new LinkedHashMap<>();
         this.logger = logger;
         this.lifecycles = lifecycles;
     }
@@ -139,7 +143,7 @@ public class DefaultLifecycles
             phases.addAll( lifecycle.getPhases() );
         }
 
-        return StringUtils.join( phases.iterator(), ", " );
+        return join( phases.iterator(), ", " );
     }
 
 }

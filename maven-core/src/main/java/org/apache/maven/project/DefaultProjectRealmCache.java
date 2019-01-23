@@ -27,14 +27,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.eclipse.aether.graph.DependencyFilter;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Default project realm cache implementation. Assumes cached data does not change.
  */
-@Component( role = ProjectRealmCache.class )
+@Named
+@Singleton
 public class DefaultProjectRealmCache
     implements ProjectRealmCache, Disposable
 {

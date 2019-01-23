@@ -22,8 +22,10 @@ package org.apache.maven.plugin.internal;
 import java.util.concurrent.atomic.AtomicReference;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.LegacySupport;
-import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.aether.RepositorySystemSession;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Helps to provide backward-compatibility with plugins that use legacy components. <strong>Warning:</strong> This is an
@@ -33,7 +35,8 @@ import org.eclipse.aether.RepositorySystemSession;
  * @since 3.0
  * @author Benjamin Bentmann
  */
-@Component( role = LegacySupport.class )
+@Named
+@Singleton
 public class DefaultLegacySupport
     implements LegacySupport
 {

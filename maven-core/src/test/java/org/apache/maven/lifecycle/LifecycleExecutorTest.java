@@ -42,22 +42,23 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoNotFoundException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+
+import javax.inject.Inject;
 
 public class LifecycleExecutorTest
     extends AbstractCoreMavenComponentTestCase
 {
-    @Requirement
+    @Inject
     private DefaultLifecycleExecutor lifecycleExecutor;
 
-    @Requirement
+    @Inject
     private DefaultLifecycleTaskSegmentCalculator lifeCycleTaskSegmentCalculator;
 
-    @Requirement
+    @Inject
     private LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator;
 
-    @Requirement
+    @Inject
     private MojoDescriptorCreator mojoDescriptorCreator;
 
 

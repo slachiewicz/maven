@@ -31,13 +31,16 @@ import org.apache.maven.project.ExtensionDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Default extension realm cache implementation. Assumes cached data does not change.
  */
-@Component( role = ExtensionRealmCache.class )
+@Named
+@Singleton
 public class DefaultExtensionRealmCache
     implements ExtensionRealmCache, Disposable
 {

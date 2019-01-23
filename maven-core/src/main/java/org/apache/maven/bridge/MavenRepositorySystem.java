@@ -53,26 +53,35 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.repository.Proxy;
 import org.apache.maven.repository.RepositorySystem;
 import org.apache.maven.settings.Mirror;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.AuthenticationContext;
 import org.eclipse.aether.repository.AuthenticationSelector;
 import org.eclipse.aether.repository.ProxySelector;
 import org.eclipse.aether.repository.RemoteRepository;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 /**
  * @author Jason van Zyl
  */
-@Component( role = MavenRepositorySystem.class, hint = "default" )
+@Named
+@Singleton
 public class MavenRepositorySystem
 {
-    @Requirement
+    @Inject
     private ArtifactHandlerManager artifactHandlerManager;
 
-    @Requirement( role = ArtifactRepositoryLayout.class )
     private Map<String, ArtifactRepositoryLayout> layouts;
+
+    @Inject
+    public MavenRepositorySystem(final Map<String, ArtifactRepositoryLayout> layouts) {
+        this.layouts = layouts;
+    }
 
     // DefaultProjectBuilder
     public Artifact createArtifact( String groupId, String artifactId, String version, String scope, String type )
@@ -150,7 +159,7 @@ public class MavenRepositorySystem
         try
         {
             String version = plugin.getVersion();
-            if ( StringUtils.isEmpty( version ) )
+            if ( isEmpty( version ) )
             {
                 version = "RELEASE";
             }
@@ -222,7 +231,7 @@ public class MavenRepositorySystem
             repository.setId( mirror.getId() );
             repository.setUrl( mirror.getUrl() );
 
-            if ( StringUtils.isNotEmpty( mirror.getLayout() ) )
+            if ( isNotEmpty( mirror.getLayout() ) )
             {
                 repository.setLayout( getLayout( mirror.getLayout() ) );
             }
@@ -360,14 +369,14 @@ public class MavenRepositorySystem
         {
             String id = repo.getId();
 
-            if ( StringUtils.isEmpty( id ) )
+            if ( isEmpty( id ) )
             {
                 throw new InvalidRepositoryException( "Repository identifier missing", "" );
             }
 
             String url = repo.getUrl();
 
-            if ( StringUtils.isEmpty( url ) )
+            if ( isEmpty( url ) )
             {
                 throw new InvalidRepositoryException( "URL missing for repository " + id, id );
             }
@@ -825,7 +834,7 @@ public class MavenRepositorySystem
         boolean result = false;
 
         // simple checks first to short circuit processing below.
-        if ( StringUtils.isEmpty( mirrorLayout ) || WILDCARD.equals( mirrorLayout ) )
+        if ( isEmpty( mirrorLayout ) || WILDCARD.equals( mirrorLayout ) )
         {
             result = true;
         }

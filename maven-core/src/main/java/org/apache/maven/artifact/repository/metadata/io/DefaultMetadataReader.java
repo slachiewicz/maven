@@ -28,16 +28,19 @@ import java.util.Objects;
 
 import org.apache.maven.artifact.repository.metadata.Metadata;
 import org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Handles deserialization of metadata from some kind of textual format like XML.
  *
  * @author Benjamin Bentmann
  */
-@Component( role = MetadataReader.class )
+@Named
+@Singleton
 public class DefaultMetadataReader
     implements MetadataReader
 {

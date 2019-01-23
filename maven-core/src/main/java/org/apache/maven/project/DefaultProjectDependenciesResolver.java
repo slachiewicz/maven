@@ -30,10 +30,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Exclusion;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -51,21 +48,29 @@ import org.eclipse.aether.util.artifact.ArtifactIdUtils;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.manager.DependencyManagerUtils;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 /**
  * @author Benjamin Bentmann
  */
-@Component( role = ProjectDependenciesResolver.class )
+@Named
+@Singleton
 public class DefaultProjectDependenciesResolver
     implements ProjectDependenciesResolver
 {
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private RepositorySystem repoSystem;
 
-    @Requirement
+    @Inject
     private List<RepositorySessionDecorator> decorators;
 
     public DependencyResolutionResult resolve( DependencyResolutionRequest request )
@@ -106,8 +111,8 @@ public class DefaultProjectDependenciesResolver
         {
             for ( Dependency dependency : project.getDependencies() )
             {
-                if ( StringUtils.isEmpty( dependency.getGroupId() ) || StringUtils.isEmpty( dependency.getArtifactId() )
-                    || StringUtils.isEmpty( dependency.getVersion() ) )
+                if ( isEmpty( dependency.getGroupId() ) || isEmpty( dependency.getArtifactId() )
+                    || isEmpty( dependency.getVersion() ) )
                 {
                     // guard against case where best-effort resolution for invalid models is requested
                     continue;

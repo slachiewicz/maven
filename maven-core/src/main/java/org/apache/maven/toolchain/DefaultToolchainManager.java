@@ -29,23 +29,30 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.toolchain.model.ToolchainModel;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author mkleint
  */
-@Component( role = ToolchainManager.class )
+@Named
+@Singleton
 public class DefaultToolchainManager
     implements ToolchainManager
 {
-    @Requirement
+    @Inject
     Logger logger;
 
-    @Requirement( role = ToolchainFactory.class )
     Map<String, ToolchainFactory> factories;
-    
+
+    @Inject
+    public DefaultToolchainManager(final Map<String, ToolchainFactory> factories) {
+        this.factories = factories;
+    }
+
     @Override
     public Toolchain getToolchainFromBuildContext( String type, MavenSession session )
     {

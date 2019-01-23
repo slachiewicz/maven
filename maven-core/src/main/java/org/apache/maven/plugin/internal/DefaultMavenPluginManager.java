@@ -62,8 +62,6 @@ import org.apache.maven.session.scope.internal.SessionScopeModule;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.component.composition.CycleDetectedInComponentGraphException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
@@ -79,7 +77,6 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.util.ReaderFactory;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.graph.DependencyFilter;
@@ -88,6 +85,9 @@ import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.util.filter.AndDependencyFilter;
 import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -106,6 +106,9 @@ import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 /**
  * Provides basic services to manage Maven plugins and their mojos. This component is kept general in its design such
  * that the plugins/mojos can be used in arbitrary contexts. In particular, the mojos can be used for ordinary build
@@ -114,7 +117,8 @@ import java.util.zip.ZipEntry;
  * @author Benjamin Bentmann
  * @since 3.0
  */
-@Component( role = MavenPluginManager.class )
+@Named
+@Singleton
 public class DefaultMavenPluginManager
     implements MavenPluginManager
 {
@@ -125,42 +129,42 @@ public class DefaultMavenPluginManager
      * same class realm is used to load build extensions and load mojos for extensions=true plugins.
      * </p>
      * <strong>Note:</strong> This is part of internal implementation and may be changed or removed without notice
-     * 
+     *
      * @since 3.3.0
      */
     public static final String KEY_EXTENSIONS_REALMS = DefaultMavenPluginManager.class.getName() + "/extensionsRealms";
 
-    @Requirement
+    @Inject
     private Logger logger;
 
-    @Requirement
+    @Inject
     private LoggerManager loggerManager;
 
-    @Requirement
+    @Inject
     private PlexusContainer container;
 
-    @Requirement
+    @Inject
     private ClassRealmManager classRealmManager;
 
-    @Requirement
+    @Inject
     private PluginDescriptorCache pluginDescriptorCache;
 
-    @Requirement
+    @Inject
     private PluginRealmCache pluginRealmCache;
 
-    @Requirement
+    @Inject
     private PluginDependenciesResolver pluginDependenciesResolver;
 
-    @Requirement
+    @Inject
     private RuntimeInformation runtimeInformation;
 
-    @Requirement
+    @Inject
     private ExtensionRealmCache extensionRealmCache;
 
-    @Requirement
+    @Inject
     private PluginVersionResolver pluginVersionResolver;
 
-    @Requirement
+    @Inject
     private PluginArtifactsCache pluginArtifactsCache;
 
     private ExtensionDescriptorBuilder extensionDescriptorBuilder = new ExtensionDescriptorBuilder();
@@ -298,7 +302,7 @@ public class DefaultMavenPluginManager
         throws PluginIncompatibleException
     {
         String requiredMavenVersion = pluginDescriptor.getRequiredMavenVersion();
-        if ( StringUtils.isNotBlank( requiredMavenVersion ) )
+        if ( isNotBlank( requiredMavenVersion ) )
         {
             try
             {
@@ -605,7 +609,7 @@ public class DefaultMavenPluginManager
 
         String configuratorId = mojoDescriptor.getComponentConfigurator();
 
-        if ( StringUtils.isEmpty( configuratorId ) )
+        if ( isEmpty( configuratorId ) )
         {
             configuratorId = "basic";
         }

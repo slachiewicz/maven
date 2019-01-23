@@ -19,17 +19,20 @@ package org.apache.maven.repository;
  * under the License.
  */
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.spi.connector.RepositoryConnector;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.transfer.NoRepositoryConnectorException;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * @author Benjamin Bentmann
  */
-@Component( role = RepositoryConnectorFactory.class, hint = "test" )
+@Named("test")
+@Singleton
 public class TestRepositoryConnectorFactory
     implements RepositoryConnectorFactory
 {

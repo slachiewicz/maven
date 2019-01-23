@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,13 +62,13 @@ public class DefaultToolchainManagerTest
     @Before
     public void onSetup() throws Exception
     {
-        toolchainManager = new DefaultToolchainManager();
-
         MockitoAnnotations.initMocks( this );
 
-        toolchainManager.factories = new HashMap<>();
-        toolchainManager.factories.put( "basic", toolchainFactory_basicType );
-        toolchainManager.factories.put( "rare", toolchainFactory_rareType );
+        HashMap<String, ToolchainFactory> factories = new HashMap<>();
+        factories.put( "basic", toolchainFactory_basicType );
+        factories.put( "rare", toolchainFactory_rareType );
+        toolchainManager = new DefaultToolchainManager( factories);
+
     }
 
     @Test

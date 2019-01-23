@@ -31,13 +31,16 @@ import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException;
 import org.apache.maven.plugin.version.PluginVersionResolutionException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.StringUtils;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.split;
 
 /**
  * <p>
@@ -51,14 +54,15 @@ import java.util.List;
  * @author jdcasey
  * @author Kristian Rosenvold (extracted class)
  */
-@Component( role = LifecycleTaskSegmentCalculator.class )
+@Named
+@Singleton
 public class DefaultLifecycleTaskSegmentCalculator
     implements LifecycleTaskSegmentCalculator
 {
-    @Requirement
+    @Inject
     private MojoDescriptorCreator mojoDescriptorCreator;
 
-    @Requirement
+    @Inject
     private LifecyclePluginResolver lifecyclePluginResolver;
 
     public DefaultLifecycleTaskSegmentCalculator()
@@ -75,9 +79,9 @@ public class DefaultLifecycleTaskSegmentCalculator
 
         List<String> tasks = session.getGoals();
 
-        if ( ( tasks == null || tasks.isEmpty() ) && !StringUtils.isEmpty( rootProject.getDefaultGoal() ) )
+        if ( ( tasks == null || tasks.isEmpty() ) && !isEmpty( rootProject.getDefaultGoal() ) )
         {
-            tasks = Arrays.asList( StringUtils.split( rootProject.getDefaultGoal() ) );
+            tasks = Arrays.asList( split( rootProject.getDefaultGoal() ) );
         }
 
         return calculateTaskSegments( session, tasks );

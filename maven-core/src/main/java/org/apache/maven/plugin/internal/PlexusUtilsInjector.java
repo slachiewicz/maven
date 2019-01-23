@@ -38,7 +38,6 @@ import org.eclipse.aether.util.artifact.JavaScopes;
 class PlexusUtilsInjector
     implements DependencyGraphTransformer
 {
-
     private static final String GID = "org.codehaus.plexus";
 
     private static final String AID = "plexus-utils";
@@ -52,6 +51,7 @@ class PlexusUtilsInjector
     {
         if ( findPlexusUtils( node ) == null )
         {
+            // TODO - add warning logger
             Artifact pu = new DefaultArtifact( GID, AID, null, EXT, VER );
             DefaultDependencyNode child = new DefaultDependencyNode( new Dependency( pu, JavaScopes.RUNTIME ) );
             child.setRepositories( node.getRepositories() );
