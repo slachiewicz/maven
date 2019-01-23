@@ -38,6 +38,9 @@ import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.model.building.ModelProblemCollector;
 import org.apache.maven.model.merge.MavenModelMerger;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Handles injection of plugin management into the model.
  *

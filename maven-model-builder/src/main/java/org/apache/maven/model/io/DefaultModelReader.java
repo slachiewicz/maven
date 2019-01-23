@@ -38,6 +38,9 @@ import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Handles deserialization of a model from some kind of textual format like XML.
  *

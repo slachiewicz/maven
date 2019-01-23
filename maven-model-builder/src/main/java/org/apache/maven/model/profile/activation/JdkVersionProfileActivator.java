@@ -34,6 +34,9 @@ import org.apache.maven.model.building.ModelProblem.Version;
 import org.apache.maven.model.building.ModelProblemCollectorRequest;
 import org.apache.maven.model.profile.ProfileActivationContext;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Determines profile activation based on the version of the current Java runtime.
  *

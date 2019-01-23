@@ -29,6 +29,9 @@ import org.apache.maven.model.building.ModelProblemCollector;
 import org.apache.maven.model.profile.ProfileActivationContext;
 import org.codehaus.plexus.util.Os;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Determines profile activation based on the operating system of the current runtime platform.
  *

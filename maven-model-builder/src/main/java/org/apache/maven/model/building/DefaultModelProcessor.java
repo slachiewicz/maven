@@ -32,7 +32,10 @@ import javax.inject.Singleton;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.locator.ModelLocator;
-import org.eclipse.sisu.Typed;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  *
@@ -61,15 +64,16 @@ import org.eclipse.sisu.Typed;
  */
 @Named( "core-default" )
 @Singleton
-@Typed( ModelProcessor.class )
 public class DefaultModelProcessor
     implements ModelProcessor
 {
 
     @Inject
+    @Named ("defaultModelLocator")
     private ModelLocator locator;
 
     @Inject
+    @Named ("defaultModelReader")
     private ModelReader reader;
 
     public DefaultModelProcessor setModelLocator( ModelLocator locator )

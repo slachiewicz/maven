@@ -44,6 +44,8 @@ import org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper;
 import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.ValueSource;
 
+import javax.inject.Inject;
+
 /**
  * Use a regular expression search to find and resolve expressions within the POM.
  *

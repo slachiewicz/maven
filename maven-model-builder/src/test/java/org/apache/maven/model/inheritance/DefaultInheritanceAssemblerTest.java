@@ -25,26 +25,34 @@ import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.io.ModelWriter;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusTestCase;
 
+import org.eclipse.sisu.launch.InjectedTest;
+import org.junit.Test;
 import org.xmlunit.matchers.CompareMatcher;
 
-import junit.framework.TestCase;
-
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertThat;
+import static org.codehaus.plexus.PlexusTestCase.getTestFile;
+import static org.junit.Assert.*;
 
 /**
  * @author Hervé Boutemy
  */
 public class DefaultInheritanceAssemblerTest
-    extends TestCase
+    extends InjectedTest
 {
+    @Inject
     private ModelReader reader;
 
+    @Inject
     private ModelWriter writer;
 
+    @Inject
     private InheritanceAssembler assembler;
 
     @Override
@@ -56,6 +64,12 @@ public class DefaultInheritanceAssemblerTest
         reader = new DefaultModelReader();
         writer = new DefaultModelWriter();
         assembler = new DefaultInheritanceAssembler();
+    }
+    protected void customizeContainerConfiguration( @SuppressWarnings( "unused" ) final ContainerConfiguration configuration )
+    {
+        super.customizeContainerConfiguration(configuration);
+        configuration.setAutoWiring( true );
+        configuration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
     }
 
     private File getPom( String name )
@@ -69,6 +83,7 @@ public class DefaultInheritanceAssemblerTest
         return reader.read( getPom( name ), null );
     }
 
+    @Test
     public void testPluginConfiguration()
         throws Exception
     {
@@ -80,6 +95,7 @@ public class DefaultInheritanceAssemblerTest
      * and child directory == artifactId
      * @throws IOException Model read problem
      */
+    @Test
     public void testUrls()
         throws Exception
     {
@@ -90,6 +106,7 @@ public class DefaultInheritanceAssemblerTest
      * Flat directory structure: parent &amp; child POMs in sibling directories, child directory == artifactId.
      * @throws IOException Model read problem
      */
+    @Test
     public void testFlatUrls()
         throws IOException
     {
@@ -100,6 +117,7 @@ public class DefaultInheritanceAssemblerTest
      * MNG-5951 MNG-6059 child.x.y.inherit.append.path="false" test
      * @throws Exception
      */
+    @Test
     public void testNoAppendUrls()
         throws Exception
     {
@@ -110,6 +128,7 @@ public class DefaultInheritanceAssemblerTest
      * MNG-5951 special case test: inherit with partial override
      * @throws Exception
      */
+    @Test
     public void testNoAppendUrls2()
         throws Exception
     {
@@ -120,6 +139,7 @@ public class DefaultInheritanceAssemblerTest
      * MNG-5951 special case test: child.x.y.inherit.append.path="true" in child should not reset content
      * @throws Exception
      */
+    @Test
     public void testNoAppendUrls3()
         throws Exception
     {
@@ -132,6 +152,7 @@ public class DefaultInheritanceAssemblerTest
      * This is why MNG-5000 fix in code is marked as bad practice (uses file names)
      * @throws IOException Model read problem
      */
+    @Test
     public void testFlatTrickyUrls()
         throws IOException
     {
@@ -171,7 +192,8 @@ public class DefaultInheritanceAssemblerTest
         }
     }
 
-    public void testWithEmptyUrl() 
+    @Test
+    public void testWithEmptyUrl()
         throws IOException
     {
         	testInheritance( "empty-urls", false );
@@ -214,6 +236,7 @@ public class DefaultInheritanceAssemblerTest
         assertThat( actual, CompareMatcher.isIdenticalTo( expected ).ignoreComments().ignoreWhitespace() );
     }
 
+    @Test
     public void testModulePathNotArtifactId()
         throws IOException
     {

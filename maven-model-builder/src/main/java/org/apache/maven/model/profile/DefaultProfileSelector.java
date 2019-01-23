@@ -36,6 +36,10 @@ import org.apache.maven.model.building.ModelProblem.Version;
 import org.apache.maven.model.building.ModelProblemCollectorRequest;
 import org.apache.maven.model.profile.activation.ProfileActivator;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Calculates the active profiles among a given collection of profiles.
  *
@@ -48,9 +52,15 @@ public class DefaultProfileSelector
 {
 
     @Inject
+            // TODO role = ProfileActivator.class )
     private List<ProfileActivator> activators = new ArrayList<>();
 
-    public DefaultProfileSelector addProfileActivator( ProfileActivator profileActivator )
+    @Inject
+    public DefaultProfileSelector(final List<ProfileActivator> activators) {
+        this.activators = activators;
+    }
+
+    public DefaultProfileSelector addProfileActivator(ProfileActivator profileActivator )
     {
         if ( profileActivator != null )
         {

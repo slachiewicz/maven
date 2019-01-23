@@ -39,6 +39,9 @@ import org.apache.maven.model.building.ModelProblem.Version;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Handles conversion of the <code>&lt;reporting&gt;</code> section into the configuration of Maven Site Plugin 3.x,
  * i.e. <code>reportPlugins</code> and <code>outputDirectory</code> parameters.

@@ -34,6 +34,9 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.WriterFactory;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Handles serialization of a model into some kind of textual format like XML.
  *

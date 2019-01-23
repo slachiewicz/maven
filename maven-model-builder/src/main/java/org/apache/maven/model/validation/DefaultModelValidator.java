@@ -238,12 +238,12 @@ public class DefaultModelValidator
             String path;
             boolean missing;
 
-            if ( StringUtils.isNotEmpty( file.getExists() ) )
+            if ( isNotEmpty( file.getExists() ) )
             {
                 path = file.getExists();
                 missing = false;
             }
-            else if ( StringUtils.isNotEmpty( file.getMissing() ) )
+            else if ( isNotEmpty( file.getMissing() ) )
             {
                 path = file.getMissing();
                 missing = true;
@@ -353,7 +353,7 @@ public class DefaultModelValidator
             for ( int i = 0, n = m.getModules().size(); i < n; i++ )
             {
                 String module = m.getModules().get( i );
-                if ( StringUtils.isBlank( module ) )
+                if ( isBlank( module ) )
                 {
                     addViolation( problems, Severity.ERROR, Version.BASE, "modules.module[" + i + "]", null,
                                   "has been specified without a path to the project directory.",
@@ -481,7 +481,7 @@ public class DefaultModelValidator
                     addViolation( problems, Severity.WARNING, Version.V20, prefix + prefix2 + "type", key,
                                   "must be 'pom' to import the managed dependencies.", dependency );
                 }
-                else if ( StringUtils.isNotEmpty( dependency.getClassifier() ) )
+                else if ( isNotEmpty( dependency.getClassifier() ) )
                 {
                     addViolation( problems, errOn30, Version.V20, prefix + prefix2 + "classifier", key,
                                   "must be empty, imported POM cannot have a classifier.", dependency );
@@ -497,7 +497,7 @@ public class DefaultModelValidator
                 }
 
                 String sysPath = dependency.getSystemPath();
-                if ( StringUtils.isNotEmpty( sysPath ) )
+                if ( isNotEmpty( sysPath ) )
                 {
                     if ( !hasExpression( sysPath ) )
                     {
@@ -675,7 +675,7 @@ public class DefaultModelValidator
         {
             String systemPath = d.getSystemPath();
 
-            if ( StringUtils.isEmpty( systemPath ) )
+            if ( isEmpty( systemPath ) )
             {
                 addViolation( problems, Severity.ERROR, Version.BASE, prefix + "systemPath", d.getManagementKey(),
                               "is missing.", d );
@@ -703,7 +703,7 @@ public class DefaultModelValidator
                 }
             }
         }
-        else if ( StringUtils.isNotEmpty( d.getSystemPath() ) )
+        else if ( isNotEmpty( d.getSystemPath() ) )
         {
             addViolation( problems, Severity.ERROR, Version.BASE, prefix + "systemPath", d.getManagementKey(),
                           "must be omitted." + " This field may only be specified for a dependency with system scope.",
@@ -1341,7 +1341,7 @@ public class DefaultModelValidator
 
     private static boolean equals( String s1, String s2 )
     {
-        return StringUtils.clean( s1 ).equals( StringUtils.clean( s2 ) );
+        return stripToEmpty( s1 ).equals( stripToEmpty( s2 ) );
     }
 
     private static Severity getSeverity( ModelBuildingRequest request, int errorThreshold )

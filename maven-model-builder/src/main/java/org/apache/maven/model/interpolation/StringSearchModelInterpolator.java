@@ -32,6 +32,8 @@ import org.codehaus.plexus.interpolation.RecursionInterceptor;
 import org.codehaus.plexus.interpolation.StringSearchInterpolator;
 import org.codehaus.plexus.interpolation.ValueSource;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;

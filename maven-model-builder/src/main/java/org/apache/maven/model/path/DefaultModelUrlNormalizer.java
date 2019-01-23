@@ -29,6 +29,10 @@ import org.apache.maven.model.Scm;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.building.ModelBuildingRequest;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Normalizes URLs to remove the ugly parent references "../" that got potentially inserted by URL adjustment during
  * model inheritance.

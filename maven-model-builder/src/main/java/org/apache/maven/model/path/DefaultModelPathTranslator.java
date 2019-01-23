@@ -33,6 +33,10 @@ import org.apache.maven.model.Reporting;
 import org.apache.maven.model.Resource;
 import org.apache.maven.model.building.ModelBuildingRequest;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Resolves relative paths within a model against a specific base directory.
  *

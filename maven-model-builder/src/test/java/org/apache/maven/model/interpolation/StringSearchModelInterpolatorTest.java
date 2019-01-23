@@ -25,6 +25,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.building.DefaultModelBuildingRequest;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.model.building.SimpleProblemCollector;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.*;
@@ -39,6 +40,8 @@ import static org.junit.Assert.assertThat;
 import static org.powermock.reflect.Whitebox.getField;
 import static org.powermock.reflect.Whitebox.getInternalState;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author jdcasey
  * @author Benjamin Bentmann
@@ -50,7 +53,7 @@ public class StringSearchModelInterpolatorTest
     protected ModelInterpolator interpolator;
 
     @Override
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();
@@ -70,6 +73,7 @@ public class StringSearchModelInterpolatorTest
         return this.interpolator;
     }
 
+    @Test
     public void testInterpolateStringArray()
         throws Exception
     {
@@ -100,6 +104,7 @@ public class StringSearchModelInterpolatorTest
         return config;
     }
 
+    @Test
     public void testInterpolateObjectWithStringArrayField()
         throws Exception
     {
@@ -125,6 +130,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "value2", obj.values[1] );
     }
 
+    @Test
     public void testInterpolateObjectWithStringListField()
         throws Exception
     {
@@ -152,6 +158,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "value2", obj.values.get( 1 ) );
     }
 
+    @Test
     public void testInterpolateObjectWithStringListFieldAndOneLiteralValue()
         throws Exception
     {
@@ -179,6 +186,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "value2", obj.values.get( 1 ) );
     }
 
+    @Test
     public void testInterpolateObjectWithUnmodifiableStringListField()
         throws Exception
     {
@@ -203,6 +211,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "${key}", obj.values.get( 0 ) );
     }
 
+    @Test
     public void testInterpolateObjectWithStringArrayListField()
         throws Exception
     {
@@ -234,6 +243,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "value4", ( (String[]) obj.values.get( 1 ) )[1] );
     }
 
+    @Test
     public void testInterpolateObjectWithStringToStringMapField()
         throws Exception
     {
@@ -261,6 +271,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "value2", obj.values.get( "key2" ) );
     }
 
+    @Test
     public void testInterpolateObjectWithStringToStringMapFieldAndOneLiteralValue()
         throws Exception
     {
@@ -288,6 +299,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "value2", obj.values.get( "key2" ) );
     }
 
+    @Test
     public void testInterpolateObjectWithUnmodifiableStringToStringMapField()
         throws Exception
     {
@@ -312,6 +324,7 @@ public class StringSearchModelInterpolatorTest
         assertEquals( "${key}", obj.values.get( "key" ) );
     }
 
+    @Test
     public void testInterpolateObjectWithStringToStringArrayMapField()
         throws Exception
     {
@@ -567,6 +580,7 @@ public class StringSearchModelInterpolatorTest
         }
     }
 
+    @Test
     public void testFinalFieldsExcludedFromInterpolation()
     {
         Properties props = new Properties();
@@ -586,6 +600,7 @@ public class StringSearchModelInterpolatorTest
         public static final String CONSTANT = "${expression}";
     }
 
+    @Test
     public void testLocationTrackerShouldBeExcludedFromInterpolation()
     {
         Properties props = new Properties();

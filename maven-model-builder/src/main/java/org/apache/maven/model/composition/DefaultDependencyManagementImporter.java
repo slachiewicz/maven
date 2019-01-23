@@ -33,6 +33,9 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.model.building.ModelProblemCollector;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Handles the import of dependency management from other models into the target model.
  *

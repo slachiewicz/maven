@@ -41,6 +41,9 @@ import org.apache.maven.model.building.ModelProblemCollector;
 import org.apache.maven.model.merge.MavenModelMerger;
 import org.codehaus.plexus.util.StringUtils;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * Handles inheritance of model values.
  *

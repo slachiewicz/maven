@@ -19,6 +19,8 @@ package org.apache.maven.model.path;
  * under the License.
  */
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.File;
 
 import javax.inject.Named;

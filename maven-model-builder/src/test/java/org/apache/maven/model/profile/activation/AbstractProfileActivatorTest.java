@@ -27,8 +27,11 @@ import org.apache.maven.model.Profile;
 import org.apache.maven.model.building.SimpleProblemCollector;
 import org.apache.maven.model.profile.DefaultProfileActivationContext;
 import org.apache.maven.model.profile.ProfileActivationContext;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusTestCase;
 
-import junit.framework.TestCase;
+import javax.inject.Named;
 
 /**
  * Provides common services to test {@link ProfileActivator} implementations.
@@ -46,6 +49,8 @@ public abstract class AbstractProfileActivatorTest<T extends ProfileActivator>
     public AbstractProfileActivatorTest( Class<T> activatorClass )
     {
         this.activatorClass = Objects.requireNonNull( activatorClass, "activatorClass cannot be null" );;
+
+        roleHint = activatorClass.getAnnotation( Named.class ).value();
     }
 
     @Override
@@ -64,6 +69,14 @@ public abstract class AbstractProfileActivatorTest<T extends ProfileActivator>
         activator = null;
 
         super.tearDown();
+    }
+
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration containerConfiguration )
+    {
+        super.customizeContainerConfiguration( containerConfiguration );
+        containerConfiguration.setAutoWiring( true );
+        containerConfiguration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
     }
 
     protected ProfileActivationContext newContext( final Properties userProperties, final Properties systemProperties )

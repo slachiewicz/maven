@@ -30,6 +30,11 @@ import org.apache.maven.model.building.DefaultModelBuildingRequest;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.model.building.SimpleProblemCollector;
 import org.apache.maven.model.path.PathTranslator;
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusTestCase;
+import org.eclipse.sisu.launch.InjectedTest;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
@@ -42,15 +47,18 @@ import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * @author jdcasey
  */
 public abstract class AbstractModelInterpolatorTest
-    extends TestCase
+    extends InjectedTest
 {
     private Properties context;
 
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();
@@ -86,6 +94,14 @@ public abstract class AbstractModelInterpolatorTest
         assertColllectorState(numFatals, numErrors, numWarnings, collector);
     }
 
+    @Override
+    protected void customizeContainerConfiguration( ContainerConfiguration containerConfiguration )
+    {
+        super.customizeContainerConfiguration( containerConfiguration );
+        containerConfiguration.setAutoWiring( true );
+        containerConfiguration.setClassPathScanning( PlexusConstants.SCANNING_INDEX );
+    }
+
     private ModelBuildingRequest createModelBuildingRequest( Properties p )
     {
         ModelBuildingRequest config = new DefaultModelBuildingRequest();
@@ -96,6 +112,7 @@ public abstract class AbstractModelInterpolatorTest
         return config;
     }
 
+    @Test
     public void testDefaultBuildTimestampFormatShouldFormatTimeIn24HourFormat()
     {
         Calendar cal = Calendar.getInstance();
@@ -128,6 +145,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "1976-11-11T23:16:00Z", format.format( secondTestDate ) );
     }
 
+    @Test
     public void testDefaultBuildTimestampFormatWithLocalTimeZoneMidnightRollover()
     {
         Calendar cal = Calendar.getInstance();
@@ -153,6 +171,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "2014-11-16T00:16:00Z", format.format( secondTestDate ) );
     }
 
+    @Test
     public void testShouldNotThrowExceptionOnReferenceToNonExistentValue()
         throws Exception
     {
@@ -173,6 +192,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "${test}/somepath", out.getScm().getConnection() );
     }
 
+    @Test
     public void testShouldThrowExceptionOnRecursiveScmConnectionReference()
         throws Exception
     {
@@ -197,6 +217,7 @@ public abstract class AbstractModelInterpolatorTest
         }
     }
 
+    @Test
     public void testShouldNotThrowExceptionOnReferenceToValueContainingNakedExpression()
         throws Exception
     {
@@ -220,6 +241,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "test/somepath", out.getScm().getConnection() );
     }
 
+    @Test
     public void testShouldInterpolateOrganizationNameCorrectly()
         throws Exception
     {
@@ -242,6 +264,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( orgName + " Tools", out.getName() );
     }
 
+    @Test
     public void testShouldInterpolateDependencyVersionToSetSameAsProjectVersion()
         throws Exception
     {
@@ -263,6 +286,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "3.8.1", ( out.getDependencies().get( 0 ) ).getVersion() );
     }
 
+    @Test
     public void testShouldNotInterpolateDependencyVersionWithInvalidReference()
         throws Exception
     {
@@ -299,6 +323,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "${something}", ( out.getDependencies().get( 0 ) ).getVersion() );
     }
 
+    @Test
     public void testTwoReferences()
         throws Exception
     {
@@ -321,6 +346,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "foo-3.8.1", ( out.getDependencies().get( 0 ) ).getVersion() );
     }
 
+    @Test
     public void testBasedir()
         throws Exception
     {
@@ -343,6 +369,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "file://localhost/myBasedir/temp-repo", ( out.getRepositories().get( 0 ) ).getUrl() );
     }
 
+    @Test
     public void testBaseUri()
         throws Exception
     {
@@ -365,6 +392,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "myBaseUri/temp-repo", ( out.getRepositories().get( 0 ) ).getUrl() );
     }
 
+    @Test
     public void testEnvars()
         throws Exception
     {
@@ -390,6 +418,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( "/path/to/home", out.getProperties().getProperty( "outputDirectory" ) );
     }
 
+    @Test
     public void testEnvarExpressionThatEvaluatesToNullReturnsTheLiteralString()
         throws Exception
     {
@@ -411,6 +440,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( out.getProperties().getProperty( "outputDirectory" ), "${env.DOES_NOT_EXIST}" );
     }
 
+    @Test
     public void testExpressionThatEvaluatesToNullReturnsTheLiteralString()
         throws Exception
     {
@@ -432,6 +462,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( out.getProperties().getProperty( "outputDirectory" ), "${DOES_NOT_EXIST}" );
     }
 
+    @Test
     public void testShouldInterpolateSourceDirectoryReferencedFromResourceDirectoryCorrectly()
         throws Exception
     {
@@ -472,6 +503,7 @@ public abstract class AbstractModelInterpolatorTest
         assertEquals( build.getSourceDirectory(), resIt.next().getDirectory() );
     }
 
+    @Test
     public void testShouldInterpolateUnprefixedBasedirExpression()
         throws Exception
     {
