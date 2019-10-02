@@ -26,20 +26,21 @@ import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.io.ModelWriter;
 
-import org.xmlunit.matchers.CompareMatcher;
-
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 
 /**
  * @author Hervé Boutemy
  */
 public class DefaultInheritanceAssemblerTest
-    extends TestCase
 {
     private ModelReader reader;
 
@@ -47,12 +48,9 @@ public class DefaultInheritanceAssemblerTest
 
     private InheritanceAssembler assembler;
 
-    @Override
-    protected void setUp()
-        throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-
         reader = new DefaultModelReader();
         writer = new DefaultModelWriter();
         assembler = new DefaultInheritanceAssembler();
@@ -63,77 +61,82 @@ public class DefaultInheritanceAssemblerTest
         return new File( "src/test/resources/poms/inheritance/" + name + ".xml" );
     }
 
-    private Model getModel( String name )
-        throws IOException
+    private Model getModel( String name ) throws IOException
     {
         return reader.read( getPom( name ), null );
     }
 
-    public void testPluginConfiguration()
-        throws Exception
+    @Test
+    public void testPluginConfiguration() throws Exception
     {
         testInheritance( "plugin-configuration" );
     }
 
     /**
-     * Check most classical urls inheritance: directory structure where parent POM in parent directory
-     * and child directory == artifactId
+     * Check most classical urls inheritance: directory structure where parent POM in parent directory and child
+     * directory == artifactId
+     *
      * @throws IOException Model read problem
      */
-    public void testUrls()
-        throws Exception
+    @Test
+    public void testUrls() throws Exception
     {
         testInheritance( "urls" );
     }
 
     /**
      * Flat directory structure: parent &amp; child POMs in sibling directories, child directory == artifactId.
+     *
      * @throws IOException Model read problem
      */
-    public void testFlatUrls()
-        throws IOException
+    @Test
+    public void testFlatUrls() throws IOException
     {
         testInheritance( "flat-urls" );
     }
 
     /**
      * MNG-5951 MNG-6059 child.x.y.inherit.append.path="false" test
+     *
      * @throws Exception
      */
-    public void testNoAppendUrls()
-        throws Exception
+    @Test
+    public void testNoAppendUrls() throws Exception
     {
         testInheritance( "no-append-urls" );
     }
 
     /**
      * MNG-5951 special case test: inherit with partial override
+     *
      * @throws Exception
      */
-    public void testNoAppendUrls2()
-        throws Exception
+    @Test
+    public void testNoAppendUrls2() throws Exception
     {
         testInheritance( "no-append-urls2" );
     }
 
     /**
      * MNG-5951 special case test: child.x.y.inherit.append.path="true" in child should not reset content
+     *
      * @throws Exception
      */
-    public void testNoAppendUrls3()
-        throws Exception
+    @Test
+    public void testNoAppendUrls3() throws Exception
     {
         testInheritance( "no-append-urls3" );
     }
 
     /**
-     * Tricky case: flat directory structure, but child directory != artifactId.
-     * Model interpolation does not give same result when calculated from build or from repo...
-     * This is why MNG-5000 fix in code is marked as bad practice (uses file names)
+     * Tricky case: flat directory structure, but child directory != artifactId. Model interpolation does not give same
+     * result when calculated from build or from repo... This is why MNG-5000 fix in code is marked as bad practice
+     * (uses file names)
+     *
      * @throws IOException Model read problem
      */
-    public void testFlatTrickyUrls()
-        throws IOException
+    @Test
+    public void testFlatTrickyUrls() throws IOException
     {
         // parent references child with artifactId (which is not directory name)
         // then relative path calculation will fail during build from disk but success when calculated from repo
@@ -146,10 +149,9 @@ public class DefaultInheritanceAssemblerTest
         catch ( AssertionError afe )
         {
             // expected failure: wrong relative path calculation
-            assertTrue( afe.getMessage(),
-                        afe.getMessage().contains(
-                                "Expected text value 'http://www.apache.org/path/to/parent/child-artifact-id/' but was " +
-                                        "'http://www.apache.org/path/to/parent/../child-artifact-id/'" ) );
+            assertTrue( afe.getMessage(), afe.getMessage().contains(
+                    "Expected text value 'http://www.apache.org/path/to/parent/child-artifact-id/' but was " +
+                    "'http://www.apache.org/path/to/parent/../child-artifact-id/'" ) );
         }
         // but ok from repo: local disk is ignored
         testInheritance( "tricky-flat-artifactId-urls", true );
@@ -167,25 +169,23 @@ public class DefaultInheritanceAssemblerTest
             // expected failure
             assertTrue( afe.getMessage(), afe.getMessage().contains(
                     "Expected text value 'http://www.apache.org/path/to/parent/../child-artifact-id/' but was " +
-                            "'http://www.apache.org/path/to/parent/child-artifact-id/'" ) );
+                    "'http://www.apache.org/path/to/parent/child-artifact-id/'" ) );
         }
     }
 
-    public void testWithEmptyUrl() 
-        throws IOException
+    @Test
+    public void testWithEmptyUrl() throws IOException
     {
-        	testInheritance( "empty-urls", false );
+        testInheritance( "empty-urls", false );
     }
-    
-    public void testInheritance( String baseName )
-        throws IOException
+
+    public void testInheritance( String baseName ) throws IOException
     {
         testInheritance( baseName, false );
         testInheritance( baseName, true );
     }
 
-    public void testInheritance( String baseName, boolean fromRepo )
-        throws IOException
+    public void testInheritance( String baseName, boolean fromRepo ) throws IOException
     {
         Model parent = getModel( baseName + "-parent" );
 
@@ -204,18 +204,18 @@ public class DefaultInheritanceAssemblerTest
         assembler.assembleModelInheritance( child, parent, null, problems );
 
         // write baseName + "-actual"
-        File actual = new File( "target/test-classes/poms/inheritance/" + baseName
-            + ( fromRepo ? "-build" : "-repo" ) + "-actual.xml" );
+        File actual = new File(
+                "target/test-classes/poms/inheritance/" + baseName + ( fromRepo ? "-build" : "-repo" ) + "-actual.xml" );
         writer.write( actual, null, child );
 
         // check with getPom( baseName + "-expected" )
         File expected = getPom( baseName + "-expected" );
 
-        assertThat( actual, CompareMatcher.isIdenticalTo( expected ).ignoreComments().ignoreWhitespace() );
+        assertThat( actual, isIdenticalTo( expected ).ignoreComments().ignoreWhitespace() );
     }
 
-    public void testModulePathNotArtifactId()
-        throws IOException
+    @Test
+    public void testModulePathNotArtifactId() throws IOException
     {
         Model parent = getModel( "module-path-not-artifactId-parent" );
 
@@ -232,6 +232,6 @@ public class DefaultInheritanceAssemblerTest
         // check with getPom( "module-path-not-artifactId-effective" )
         File expected = getPom( "module-path-not-artifactId-expected" );
 
-        assertThat( actual, CompareMatcher.isIdenticalTo(expected).ignoreComments().ignoreWhitespace() );
+        assertThat( actual, isIdenticalTo( expected ).ignoreComments().ignoreWhitespace() );
     }
 }
