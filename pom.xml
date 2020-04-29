@@ -60,7 +60,7 @@ under the License.
     <guiceVersion>4.2.2</guiceVersion>
     <sisuInjectVersion>0.3.4</sisuInjectVersion>
     <wagonVersion>3.4.0</wagonVersion>
-    <jsoupVersion>1.12.1</jsoupVersion>
+    <jsoupVersion>1.13.1</jsoupVersion>
     <securityDispatcherVersion>1.4</securityDispatcherVersion>
     <cipherVersion>1.8</cipherVersion>
     <modelloVersion>1.11</modelloVersion>
