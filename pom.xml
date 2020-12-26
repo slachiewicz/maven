@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -570,6 +570,7 @@ under the License.
               -->
               <exclude>src/main/appended-resources/licenses/CDDL-1.0.txt</exclude>
               <exclude>src/main/appended-resources/licenses/EPL-1.0.txt</exclude>
+              <exclude>.mvn/.gradle-enterprise/gradle-enterprise-workspace-id</exclude>
             </excludes>
           </configuration>
         </plugin>
