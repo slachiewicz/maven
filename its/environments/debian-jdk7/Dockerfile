@@ -15,4 +15,4 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM maven:3-jdk-7
+FROM maven:3-jdk-9
