@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM azul/zulu-openjdk:7
+FROM azul/zulu-openjdk:8
 
 RUN apt-get update &&\
     apt-get upgrade -y ca-certificates &&\
