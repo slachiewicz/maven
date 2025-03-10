@@ -35,3 +35,33 @@ updates:
     schedule:
       interval: "daily"
 
+
+  - package-ecosystem: docker
+    directory: /its/environments/debian-jdk7
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /its/environments/debian-jdk8
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /its/environments/fedora-jdk8
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /its/environments/ibm-jdk8
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /its/environments/zulu-jdk7
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /its/environments/zulu-jdk8
+    schedule:
+      interval: daily
