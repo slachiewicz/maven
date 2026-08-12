@@ -157,6 +157,9 @@ public class DefaultModelValidator implements ModelValidator {
         } else if (request.getValidationLevel() >= ModelBuildingRequest.VALIDATION_LEVEL_MAVEN_2_0) {
             Severity errOn30 = getSeverity(request, ModelBuildingRequest.VALIDATION_LEVEL_MAVEN_3_0);
 
+            Severity errOn31 = getSeverity(request, ModelBuildingRequest.VALIDATION_LEVEL_MAVEN_3_1);
+
+            // [MNG-8129] Validate that relativePath does not contain characters that are illegal in filesystem paths
             if (parent != null
                     && parent.getRelativePath() != null
                     && !parent.getRelativePath().isEmpty()) {
@@ -164,8 +167,8 @@ public class DefaultModelValidator implements ModelValidator {
                         "parent.",
                         "relativePath",
                         problems,
-                        errOn30,
-                        Version.BASE,
+                        errOn31,
+                        Version.V20,
                         parent.getRelativePath(),
                         null,
                         parent,
