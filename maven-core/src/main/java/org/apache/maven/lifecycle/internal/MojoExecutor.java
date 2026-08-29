@@ -431,7 +431,13 @@ public class MojoExecutor {
                 for (Map.Entry<String, List<MojoExecution>> fork : forkedExecutions.entrySet()) {
                     String projectId = fork.getKey();
 
-                    int index = projectIndex.getIndices().get(projectId);
+                    Integer index = projectIndex.getIndices().get(projectId);
+                    if (index == null) {
+                        throw new LifecycleExecutionException(
+                                "Forked execution references project '" + projectId + "' which is not in the reactor",
+                                mojoExecution,
+                                project);
+                    }
 
                     MavenProject forkedProject = projectIndex.getProjects().get(projectId);
 
